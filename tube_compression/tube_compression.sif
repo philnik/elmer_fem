@@ -1,0 +1,80 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "./tube/"
+  Include Path "./"
+  Results Directory "./"
+End
+
+Simulation
+  Max Output Level = 10
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady state
+  Steady State Max Iterations = 10
+  Output Intervals(1) = 1
+  Solver Input File = case.sif
+  Post File = case_F500_SI.vtu
+End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "Body 1"
+  Equation = 1
+  Material = 1
+End
+
+Equation 1
+  Active Solvers(1) = 1
+  Stress Analysis = True
+End 
+
+
+Solver 1
+  Equation = "Displacement analysis"
+  Procedure = "StressSolve" "StressSolver"
+  ! Variable = -dofs 3 Displacement
+  Calculate stresses = True
+
+  Linear System Solver = Direct
+  Linear System Direct Method = Banded
+
+  Nonlinear System Convergence Tolerance = 1.0e-05
+  Nonlinear System Relaxation Factor = 1.0
+  Nonlinear System Max Iterations = Integer 1
+  Time Derivative Order = 2
+
+End
+
+Material 1
+  Name = "PP"
+  Heat Conductivity = 0.16
+  Poisson ratio = 0.30
+  Heat expansion Coefficient = 80.0e-6
+  Youngs modulus = 1000.0e3
+  Heat Capacity = 900.0
+  Density = 1000
+End
+
+Boundary Condition 1
+  Target Boundaries(1) = 7 
+  Name = "reaction"
+  Displacement 1 = 0
+  Displacement 2 = 0
+  Displacement 3 = 0
+End
+
+Boundary Condition 2
+  Target Boundaries(1) = 11
+  Name = "force"
+  Normal Force = 500
+  Normal-Tangential Displacement = True
+End
