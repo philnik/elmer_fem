@@ -1,0 +1,118 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "./my_surface"
+  Include Path ""
+  Results Directory "./"
+End
+
+Simulation
+  Max Output Level = 5
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady state
+  Steady State Max Iterations = 1
+  Output Intervals(1) = 1
+  Solver Input File = my_surface.sif
+  Post File = my_surface2.vtu
+End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+    Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+
+
+Body Force 2 
+! Normal Pressure = Variable Coordinate 2; Real MATC "-20*(3.0-tx)"
+Normal Pressure = Variable Coordinate 2; Real MATC "-0.2*(0.0+tx)"
+End
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "Body 1"
+  Equation = 1
+  Material = 1
+  Body Force = 2
+End
+
+Equation 1 :: Active Solvers(3) = 1 2 3
+
+Solver 1
+  Equation = "Shell equations"
+  Procedure = "ShellSolver" "ShellSolver"
+  Large Deflection = True
+  Displace Mesh = True
+  Linear System Solver = "Iterative"
+  Linear System Preconditioning = ILU2
+  Linear System Max Iterations = 10000
+  Linear System Convergence Tolerance = 1e-7
+  Linear System Iterative Method = GCR
+  Linear System GCR Restart = 100
+  Linear System Abort Not Converged = False
+  Steady State Convergence Tolerance = 1e-09
+  Nonlinear System Convergence Tolerance = 1e-8
+End
+
+
+Solver 2
+Exec Solver = after timestep
+Equation = String SaveScalars
+Procedure = File "SaveData" "SaveScalars"
+Filename = File "f.dat"
+Variable 1 = String u
+Operator 1 = String max
+Variable 2 = String dnu
+Operator 2 = String max
+End
+
+Solver 3
+Equation = "SaveLine"
+Procedure = File "SaveData" "SaveLine"
+Filename = "g_surface.dat"
+File Append = Logical False
+Polyline Coordinates(2,2) = Real 0.0 1.0 0.0 2.0
+End
+
+Material 1
+  Name = "PP"
+  Heat Conductivity = 0.16
+  Poisson ratio = 0.30
+  Heat expansion Coefficient = 80.0e-6
+  Youngs modulus = 1900.0e6
+  Heat Capacity = 900.0
+  Density = 1000
+  Shell Thickness = Real 100.0e-3
+End
+
+
+Boundary Condition 1
+  Target Boundaries(2) = 3 4
+  U 1 = Real 0
+  U 2 = Real 0
+  U 3 = Real 0
+  !DNU 1 = Real 0
+  !DNU 2 = Real 0
+  !DNU 3 = Real 0
+End
+
+
+
+
+
+Boundary Condition 2
+  Target Boundaries(1) = 3
+  Save Scalars = Logical True 
+End
+
+
+Boundary Condition 4
+  Target Boundaries(1) = 1
+  Save Line = Logical True 
+End
+
+

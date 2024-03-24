@@ -10,7 +10,7 @@ external_diameter = 1.50;
 
 internal_diameter = external_diameter - 2 * thickness;
 
-height = 2;
+height = 6;
 
 //
 Circle(1) = {0, 0, 0, external_diameter, 0, 2*Pi};

@@ -27,15 +27,10 @@ End
 
 
 
-Body Force 1
-  Normal Pressure = Real -1.0
-End
-
 Body Force 2 
-  Normal Pressure = Real -1.0
+!  Normal Pressure = Variable Coordinate 3; Real MATC "-2000*(3.0-tx)"
+Normal Pressure = Variable Coordinate 3; Real MATC "-2000*(0.0+tx)"
 End
-
-
 
 Body 1
   Target Bodies(1) = 1
@@ -53,39 +48,53 @@ Body 2
 End
 
 
-Equation 1 :: Active Solvers(1) = 1
+Equation 1 :: Active Solvers(3) = 1 2 3
 
 Solver 1
   Equation = "Shell equations"
-
   Procedure = "ShellSolver" "ShellSolver"
-
-!  Strain Reduction Operator = Integer 0
-
+  Large Deflection = True
+  Displace Mesh = True
   Linear System Solver = "Iterative"
   Linear System Preconditioning = ILU2
-!  Linear System Row Equilibration = Logical True
-  Linear System Max Iterations = 1000
+  Linear System Max Iterations = 10000
   Linear System Convergence Tolerance = 1e-5
   Linear System Iterative Method = GCR
   Linear System GCR Restart = 100
   Linear System Abort Not Converged = False
   Steady State Convergence Tolerance = 1e-09
-
   Nonlinear System Convergence Tolerance = 1e-8
 End
 
 
+Solver 2
+Exec Solver = after timestep
+Equation = String SaveScalars
+Procedure = File "SaveData" "SaveScalars"
+Filename = File "f.dat"
+Variable 1 = String u
+Operator 1 = String max
+Variable 2 = String dnu
+Operator 2 = String max
+End
+
+Solver 3
+Equation = "SaveLine"
+Procedure = File "SaveData" "SaveLine"
+Filename = "g5.dat"
+File Append = Logical True
+Polyline Coordinates(2,2) = Real 0.0 1.0 0.0 2.0
+End
 
 Material 1
   Name = "PP"
   Heat Conductivity = 0.16
   Poisson ratio = 0.30
   Heat expansion Coefficient = 80.0e-6
-  Youngs modulus = 1900.0e6
+  Youngs modulus = 1900.0e4
   Heat Capacity = 900.0
   Density = 1000
-  Shell Thickness = Real 1.0e-3
+  Shell Thickness = Real 100.0e-3
 End
 
 
@@ -94,21 +103,21 @@ Boundary Condition 1
   U 1 = Real 0
   U 2 = Real 0
   U 3 = Real 0
- ! DNU 1 = Real 0
- ! DNU 2 = Real 0
- ! DNU 3 = Real 0
+  !DNU 1 = Real 0
+  !DNU 2 = Real 0
+  !DNU 3 = Real 0
 End
 
 
-
-
-Boundary Condition 1
-  Target Boundaries(1) = 3
-  ! Resultant Force 1 = 1
-  U 1 = Real 0
-   U 2 = Real 0
-   U 3 = Real 0
- ! DNU 1 = Real 0
- ! DNU 2 = Real 0
- ! DNU 3 = Real 0
+Boundary Condition 2
+  Target Boundaries(1) = 1
+  Save Scalars = Logical True 
 End
+
+
+Boundary Condition 4
+  Target Boundaries(1) = 2
+  Save Line = Logical True 
+End
+
+
