@@ -1,0 +1,108 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "./navier_corridor2d"
+  Include Path ""
+  Results Directory "./"
+End
+
+Simulation
+  Angular Frequency = 500
+  Max Output Level = 5
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady state
+  Steady State Max Iterations = 1
+  Output Intervals(1) = 1
+  Solver Input File = helm.sif
+  Post File = helm.vtu
+End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(4) = 1 2 3 4 
+  Name = "insulator"
+  Material = 2
+End
+
+Body 2
+  Target Bodies(1) = 5
+  Name = "air"
+  Equation = 1
+  Material = 1
+End
+
+Solver 1
+  Equation = Helmholtz Equation
+  Variable = -dofs 2 Pressure Wave
+  Procedure = "HelmholtzSolve" "HelmholtzSolver"
+  Exec Solver = Always
+  Stabilize = True
+  Optimize Bandwidth = True
+  Steady State Convergence Tolerance = 1.0e-5
+  Nonlinear System Convergence Tolerance = 1.0e-7
+  Nonlinear System Max Iterations = 20
+  Nonlinear System Newton After Iterations = 3
+  Nonlinear System Newton After Tolerance = 1.0e-3
+  Nonlinear System Relaxation Factor = 1
+  Linear System Solver = Iterative
+  Linear System Iterative Method = BiCGStab
+  Linear System Max Iterations = 500
+  Linear System Convergence Tolerance = 1.0e-10
+  BiCGstabl polynomial degree = 2
+  Linear System Preconditioning = ILU0
+  Linear System ILUT Tolerance = 1.0e-3
+  Linear System Abort Not Converged = False
+  Linear System Residual Output = 10
+  Linear System Precondition Recompute = 1
+End
+
+Equation 1
+  Name = "Equation 1"
+  Active Solvers(1) = 1
+End
+
+Material 1
+  Name = "Air (room temperature)"
+  Heat Conductivity = 0.0257
+  Relative Permittivity = 1.00059
+  Sound speed = 343.0
+  Heat Capacity = 1005.0
+  Heat expansion Coefficient = 3.43e-3
+  Density = 1.205
+  Viscosity = 1.983e-5
+End
+
+Material 2
+  Name = "damping"
+  Sound damping = 1e-9
+  Density = 1000.0
+  Sound speed = 343.0
+End
+
+Boundary Condition 1
+  Target Boundaries(1) = 20 
+  Name = "BoundaryCondition 1"
+  Pressure Wave 1 = -10
+End
+
+
+Boundary Condition 2
+  Target Boundaries(2) = 19 17 
+  Name = "BoundaryCondition 1"
+  Pressure Wave 2 = 0
+End
+
+
+Boundary Condition 3
+  Target Boundaries(1) = 18
+  Name = "BoundaryCondition 1"
+  Pressure Wave 2 = 0
+End
