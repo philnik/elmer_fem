@@ -1,8 +1,8 @@
 Header
   CHECK KEYWORDS Warn
-  Mesh DB "/home/me/elmer_fem/cylinder_solid/" "./cylinder_solid"
+  Mesh DB "." "./cylinder_solid"
   Include Path ""
-  Results Directory "/home/me/elmer_fem/cylinder_solid/" 
+  Results Directory "./results/" 
 End
 
 Simulation
