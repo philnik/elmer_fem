@@ -1,0 +1,102 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "."
+  Include Path ""
+  Results Directory ""
+End
+
+Simulation
+  Max Output Level = 10
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady state
+  Steady State Max Iterations = 10
+  Output Intervals(1) = 1
+  Solver Input File = case.sif
+  Post File = case50.vtu
+End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "Body 1"
+  Equation = 1
+  Material = 1
+End
+
+Body 2
+  Target Bodies(1) = 2
+  Name = "Body 2"
+  Equation = 1
+  Material = 1
+End
+
+Solver 1
+  Equation = Linear elasticity
+  Calculate Loads = True
+Calculate Strains = Logical True
+Calculate Stresses = Logical True
+Calculate Principal = Logical True
+  Procedure = "StressSolve" "StressSolver"
+  Calculate Stresses = True
+  Exec Solver = Always
+  Stabilize = True
+  Optimize Bandwidth = True
+  Steady State Convergence Tolerance = 1.0e-7
+  Nonlinear System Convergence Tolerance = 1.0e-7
+  Nonlinear System Max Iterations = 20
+  Nonlinear System Newton After Iterations = 3
+  Nonlinear System Newton After Tolerance = 1.0e-5
+  Nonlinear System Relaxation Factor = 0.5
+  Linear System Solver = Iterative
+  Linear System Iterative Method = BiCGStab
+  Linear System Max Iterations = 500000
+  Linear System Convergence Tolerance = 1.0e-10
+  BiCGstabl polynomial degree = 2
+  Linear System Preconditioning = ILU0
+  Linear System ILUT Tolerance = 1.0e-5
+  Linear System Abort Not Converged = False
+  Linear System Residual Output = 10
+  Linear System Precondition Recompute = 1
+End
+
+Equation 1
+  Name = "Equation 1"
+  Calculate Stresses = True
+  Plane Stress = True
+  Active Solvers(1) = 1
+End
+
+Material 1
+  Name = "PP"
+  Heat Conductivity = 0.16
+  Poisson ratio = 0.30
+  Heat expansion Coefficient = 80.0e-6
+  Youngs modulus = 1900.0e6
+  Heat Capacity = 900.0
+  Density = 1000
+End
+
+Boundary Condition 1
+  Target Boundaries(1) = 7 
+  Name = "reaction"
+  Displacement 1 = 0
+  Normal-Tangential Displacement = True
+  Displacement 2 = 0
+  Displacement 3 = 0
+End
+
+Boundary Condition 2
+  Target Boundaries(1) = 4 
+  Name = "force"
+  Normal Force = -1000
+  Normal-Tangential Displacement = True
+End
