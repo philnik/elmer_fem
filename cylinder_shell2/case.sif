@@ -1,8 +1,8 @@
 Header
   CHECK KEYWORDS Warn
-  Mesh DB "." "."
+  Mesh DB "." "./cylinder_shell"
   Include Path ""
-  Results Directory ""
+  Results Directory "."
 End
 
 Simulation
