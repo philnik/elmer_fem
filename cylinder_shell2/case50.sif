@@ -1,8 +1,8 @@
 Header
   CHECK KEYWORDS Warn
   Mesh DB "." "."
-  Include Path ""
-  Results Directory ""
+  Include Path "."
+  Results Directory "."
 End
 
 Simulation
@@ -42,7 +42,7 @@ End
 
 
 Body Force 2 
-  Normal Pressure = Real -10000.0
+  Normal Pressure = Real -1000.0
 End
 
 Solver 1
