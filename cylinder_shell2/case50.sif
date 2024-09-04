@@ -1,8 +1,8 @@
 Header
   CHECK KEYWORDS Warn
-  Mesh DB "." "."
-  Include Path ""
-  Results Directory ""
+  Mesh DB "cylinder_shell"
+  Include Path "."
+  Results Directory  "results"
 End
 
 Simulation
@@ -13,7 +13,7 @@ Simulation
   Steady State Max Iterations = 1
   Output Intervals(1) = 1
   Solver Input File = case.sif
-  Post File = case50.vtu
+  Post File = case0905_length_3.vtu
 End
 
 Constants
