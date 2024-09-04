@@ -26,7 +26,7 @@ Constants
 End
 
 Body 1
-  Target Bodies(1) = 1
+  Target Bodies(2) = 1 2
   Name = "Body 1"
   Equation = 1
   Material = 1
