@@ -13,7 +13,7 @@ Simulation
   Steady State Max Iterations = 1
   Output Intervals(1) = 1
   Solver Input File = case.sif
-  Post File = case50.vtu
+  Post File = case60_runs.vtu
 End
 
 Constants
@@ -26,22 +26,15 @@ Constants
 End
 
 Body 1
-  Target Bodies(2) = 1 2
+  Target Bodies(1) = 2
   Name = "Body 1"
   Equation = 1
   Material = 1
-End
-
-Body 2
-  Target Bodies(1) = 2
-  Name = "Body 2"
-  Equation = 1
-  Material = 1
-  Body Force = 2
+  Body Force = 1
 End
 
 
-Body Force 2 
+Body Force 1 
   Normal Pressure = Real -1000.0
 End
 
@@ -82,7 +75,7 @@ Material 1
   Youngs modulus = 1900.0e6
   Heat Capacity = 900.0
   Density = 1000
-  Shell Thickness = Real 50.0e-3
+  Shell Thickness = Real 5.0e-3
 End
 
 
