@@ -1,0 +1,84 @@
+Header
+  Mesh DB "." "choani-profile"
+  Include Path ""
+  Results Directory "./"
+End
+
+Simulation
+  Max Output Level = 5
+  Coordinate System =  Cartesian
+!  coordinate system = axi symmetric
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady
+  Steady State Max Iterations = 1
+  Output Intervals = 1
+  Post File   = "choani.vtu"
+! Post File = "Pipe.ep"
+! Output File = "Pipe.dat"
+End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.67e-8
+End
+
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "Body Property 1"
+  Equation = 1
+  Material = 1
+End
+
+
+Equation 1
+  Name = "Equation1"
+  Navier-Stokes = True
+End
+
+Solver 1
+   Equation = "Navier-Stokes"
+   Linear System Solver = Iterative
+   Linear System Iterative Method = BiCGStab
+   Linear System Max Iterations = 500
+   Linear System Convergence Tolerance = 1.0e-8
+   Linear System Preconditioning = ILU1
+   Linear System Residual Output = 20
+   Steady State Convergence Tolerance = 1.0e-5
+   Bubbles = True
+   Nonlinear System Convergence Tolerance = 1.0e-5
+   Nonlinear System Max Iterations = 20
+   Nonlinear System Newton After Iterations = 3
+   Nonlinear System Newton After Tolerance = 1.0e-2
+   Nonlinear System Relaxation Factor = 1.0
+End
+
+Material 1
+  Name = "Material1"
+  Density = 1
+  Viscosity = 1.0e-2
+End
+
+
+Boundary Condition 1
+  Name = "Walls"
+  Target Boundaries(46) = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 33 34 35 36 37 38 39 40 41 43 44 45 46
+  Velocity 1 = 0
+  Velocity 2 = 0
+End
+
+Boundary Condition 2
+  Name = "Inlet"
+  Target Boundaries = 32
+  ! Velocity 1 = Variable Coordinate 2; Real MATC "0.01*(tx+1.5)*(tx-7.5)"
+  ! Velocity 2 = Real 0.1
+  ! Velocity 1 = 0
+End
+
+Boundary Condition 3
+  Name = "Outlet"
+  Target Boundaries = 42
+  Velocity 1 = 0
+End
+
+RUN
