@@ -6,16 +6,18 @@ End
 
 Simulation
   Max Output Level = 5
-  Coordinate System =  Cartesian
-!  coordinate system = axi symmetric
+  Coordinate System = Cartesian 2D
   Coordinate Mapping(3) = 1 2 3
-  Simulation Type = Steady
-  Steady State Max Iterations = 1
+  Simulation Type = Transient
+  Steady State Max Iterations = 5
+  Timestepping Method = BDF
+  BDF Order = 2
+  Timestep Sizes = 0.01
+  Timestep Intervals = 4000
   Output Intervals = 1
-  Post File   = "choani.vtu"
-! Post File = "Pipe.ep"
-! Output File = "Pipe.dat"
+  Post File = case001.vtu
 End
+
 
 Constants
   Gravity(4) = 0 -1 0 9.82
@@ -30,11 +32,13 @@ Body 1
   Material = 1
 End
 
-
 Equation 1
-  Name = "Equation1"
+  Name = "Navier-Stokes"
   Navier-Stokes = True
+  Convection = True
+  Active Solvers(2) = 1 3
 End
+
 
 Solver 1
    Equation = "Navier-Stokes"
@@ -48,10 +52,47 @@ Solver 1
    Bubbles = True
    Nonlinear System Convergence Tolerance = 1.0e-5
    Nonlinear System Max Iterations = 20
-   Nonlinear System Newton After Iterations = 3
+   Nonlinear System Newton After Iterations = 10
    Nonlinear System Newton After Tolerance = 1.0e-2
    Nonlinear System Relaxation Factor = 1.0
+   
 End
+
+Solver 2
+  Equation = "SaveData"
+  Procedure = "SaveData" "SaveScalars"
+  Filename = "point_data.dat"               ! Output filename
+  !Output File = "point_data.dat"
+  Variable 1 = Velocity                      ! Save velocity
+  Variable 2 = Pressure                      ! Save pressure
+  Save Coordinates(1,2) = 0.0 -0.25            ! Save data at point (x, y) = (0.5, 0.5)
+  !Output Intervals = 1                       ! Save every timestep
+End
+
+
+! Solver 2
+!   Equation = "Pressure"
+!   Variable = "Pressure"
+!   Procedure = "FlowSolve" "PressureSolver"
+!   Linear System Solver = Iterative
+!   Linear System Iterative Method = BiCGStab
+!   Linear System Max Iterations = 500
+!   Linear System Convergence Tolerance = 1.0e-8
+!   Linear System Preconditioning = ILU1
+! End
+
+
+! Solver 3
+!   Equation = "VTU Output"
+!   Procedure = "ResultOutputSolve" "ResultOutputSolver"
+!   Output File Name = "flow_output"          ! Base name for the output files
+!   ! VTK Format = Vtu                          ! VTU output format
+!   Scalar Field 1 = Pressure                 ! Output the pressure field
+!   Vector Field 1 = Velocity                 ! Output the velocity field
+! !  Output Intervals = 1                      ! How often to write data (every timestep in this case)
+!   Binary Output = True                      ! Write in binary format for smaller file sizes
+! End
+
 
 Material 1
   Name = "Material1"
@@ -71,7 +112,7 @@ Boundary Condition 2
   Name = "Inlet"
   Target Boundaries = 6
   ! Velocity 1 = Variable Coordinate 2; Real MATC "0.01*(tx+1.5)*(tx-7.5)"
-  Velocity 2 = Real 0.1
+  Velocity 2 = Variable Time; Real MATC "tx"
   Velocity 1 = 0
 End
 
