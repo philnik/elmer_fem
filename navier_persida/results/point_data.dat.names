@@ -1,0 +1,13 @@
+Metadata for SaveScalars file: ./results/point_data.dat
+Elmer version: 9.0
+Elmer compilation date: 2024-09-11
+Solver input file: case.sif
+File started at: 2024/09/21 13:14:25
+ 
+Variables in columns of matrix: 
+   1: value: coordinate 1 at node 1165
+   2: value: coordinate 2 at node 1165
+   3: value: coordinate 3 at node 1165
+   4: value: velocity 1 at node 1165
+   5: value: velocity 2 at node 1165
+   6: value: pressure at node 1165
