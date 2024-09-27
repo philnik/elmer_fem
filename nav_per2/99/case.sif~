@@ -1,5 +1,5 @@
 Header
-  Mesh DB "." "cpm"
+  Mesh DB "." "x"
   Include Path ""
   Results Directory "./results"
 End
@@ -15,7 +15,7 @@ Simulation
   Timestep Sizes = 0.01
   Timestep Intervals = 4000
   Output Intervals = 1
-  Post File = case001.vtu
+  Post File = third_attempt.vtu
 End
 
 
@@ -103,22 +103,23 @@ End
 
 Boundary Condition 1
   Name = "Walls"
-  Target Boundaries(58) =  1 2 3 4 5 7 8 9 10 11 12 13 14 15 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60
+  Target Boundaries(52) = 1 2 3 5 6 7 8 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55
+  ! Target Boundaries(52) = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55
   Velocity 1 = 0
   Velocity 2 = 0
 End
 
 Boundary Condition 2
   Name = "Inlet"
-  Target Boundaries = 16
+  Target Boundaries (2) = 9 36
   ! Velocity 1 = Variable Coordinate 2; Real MATC "0.01*(tx+1.5)*(tx-7.5)"
-  Velocity 2 = Variable Time; Real MATC "tx"
+  Velocity 2 = Variable Time; Real MATC "0.5*tx"
   Velocity 1 = 0
 End
 
 Boundary Condition 3
   Name = "Outlet"
-  Target Boundaries = 6
+  Target Boundaries = 4
   Velocity 1 = 0
 End
 

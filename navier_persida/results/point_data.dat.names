@@ -1,8 +1,8 @@
 Metadata for SaveScalars file: ./results/point_data.dat
 Elmer version: 9.0
-Elmer compilation date: 2024-09-11
+Elmer compilation date: 2024-01-22
 Solver input file: case.sif
-File started at: 2024/09/21 13:14:25
+File started at: 2024/09/23 15:36:33
  
 Variables in columns of matrix: 
    1: value: coordinate 1 at node 1165
