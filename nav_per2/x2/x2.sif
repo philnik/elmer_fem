@@ -1,8 +1,39 @@
 Header
   Mesh DB "." "x2"
   Include Path ""
-  Results Directory "./results"
+  Results Directory "./results_change_viscocity"
 End
+
+$ RefT = 350.0
+$ RefP = 1.0e5 
+
+
+Material 2
+  Density = 1
+  Viscosity = 1e-3
+  Heat Capacity = 1000
+  Heat Conductivity  = 1.0
+  Compressibility Model = perfect gas
+  Specific Heat Ratio = $ 5.0/3.0
+! incompressible
+! thermal : account for temperature in N-S only in boyancy
+! perfect gas (perfect gas equation 1) : 
+! user defined
+! pressure dependent
+! artificial compressible
+  Reference Temperature = 350
+! Ignoring natural convection for simplicity
+  Heat Expansion Coefficient = 0.0
+End
+
+
+Initial Condition 1
+  Name = "AtmosphericState"
+  Temperature = Real 350.0
+  Pressure =  Real 1.0e5
+End
+
+
 
 Simulation
   Max Output Level = 5
@@ -15,7 +46,7 @@ Simulation
   Timestep Sizes = 0.01
   Timestep Intervals = 4000
   Output Intervals = 1
-  Post File = x50.vtu
+  Post File = x50_viscous_real.vtu
 End
 
 
@@ -25,11 +56,35 @@ Constants
 End
 
 
+Material 1
+  Density = 1
+  Viscosity = 1
+  Heat Capacity = 1000
+  Heat Conductivity  = 1.0
+
+  Compressibility Model = perfect gas
+  Specific Heat Ratio = $ 5.0/3.0
+
+! incompressible
+! thermal : account for temperature in N-S only in boyancy
+! perfect gas (perfect gas equation 1) : 
+! user defined
+! pressure dependent
+! artificial compressible
+
+! Ignoring natural convection for simplicity
+  Heat Expansion Coefficient = 0.0
+End
+
+
+
 Body 1
   Target Bodies(1) = 1
   Name = "Body Property 1"
   Equation = 1
-  Material = 1
+  Material = 2
+  Initial Condition = 1
+  Temperature = Real 350.0
 End
 
 Equation 1
@@ -42,6 +97,7 @@ End
 
 Solver 1
    Equation = "Navier-Stokes"
+   Flow Model = No Convection
    Linear System Solver = Iterative
    Linear System Iterative Method = BiCGStab
    Linear System Max Iterations = 50000
@@ -96,8 +152,11 @@ End
 
 Material 1
   Name = "Material1"
-  Density = 1
-  Viscosity = 1e-3
+  Density = 1.2
+  Viscosity = 1.86e-3
+  Compressibility Model = perfect gas
+  Specific Heat Ratio = $ 5.0/3.0
+  Reference Temperature = Real 350.0
 End
 
 
@@ -114,7 +173,7 @@ Boundary Condition 2
   ! Velocity 1 = Variable Coordinate 2; Real MATC "0.01*(tx+1.5)*(tx-7.5)"
   ! Velocity 2 = Variable Time; Real MATC "50*tx"
   Velocity 2 = 0.0
-  Velocity 1 = 1.0
+  Velocity 1 = 0.01
 End
 
 Boundary Condition 3
