@@ -1,8 +1,8 @@
 Header
   CHECK KEYWORDS Warn
-  Mesh DB "." "x4"
+  Mesh DB "." "x5"
   Include Path ""
-  Results Directory "x4_steady"
+  Results Directory "x5_steady"
 End
 
 Simulation
@@ -10,10 +10,10 @@ Simulation
   Coordinate System = Cartesian
   Coordinate Mapping(3) = 1 2 3
   Simulation Type = Steady state
-  Steady State Max Iterations = 1
+  Steady State Max Iterations = 100
   Output Intervals(1) = 1
-  Solver Input File = x3_steady.sif
-  Post File = steady_v5.vtu
+  Solver Input File = x4_steady.sif
+  Post File = steady_v001_tiny.vtu
 End
 
 Constants
@@ -83,7 +83,7 @@ End
 Boundary Condition 2
   Target Boundaries(1) = 2 
   Name = "inlet"
-  Velocity 2 = 0.01
+  Velocity 2 = 1
   Velocity 1 = 0
 End
 

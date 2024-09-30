@@ -12,8 +12,8 @@ Simulation
   Steady State Max Iterations = 200
   Timestepping Method = BDF
   BDF Order = 2
-  Timestep Sizes = 0.5
-  Timestep Intervals = 4000
+  Timestep Sizes = 1000.0
+  Timestep Intervals = 400000
   Output Intervals = 1
   Post File = x2_transient.vtu
 End

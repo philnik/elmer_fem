@@ -2,19 +2,34 @@ Header
   CHECK KEYWORDS Warn
   Mesh DB "." "."
   Include Path ""
-  Results Directory ""
+  Results Directory "x3_transient"
 End
 
 Simulation
   Max Output Level = 5
-  Coordinate System = Cartesian
+  Coordinate System = Cartesian 2D
   Coordinate Mapping(3) = 1 2 3
-  Simulation Type = Steady state
-  Steady State Max Iterations = 1
-  Output Intervals(1) = 1
-  Solver Input File = case.sif
-  Post File = transient.vtu
+  Simulation Type = Transient
+  Steady State Max Iterations = 50
+  Timestepping Method = BDF
+  BDF Order = 2
+  Timestep Sizes = 0.1
+  Timestep Intervals = 200
+  Output Intervals = 1
+  Post File = x3_transient.vtu
 End
+
+
+! Simulation
+!   Max Output Level = 5
+!   Coordinate System = Cartesian
+!   Coordinate Mapping(3) = 1 2 3
+!   Simulation Type = Steady state
+!   Steady State Max Iterations = 1
+!   Output Intervals(1) = 1
+!   Solver Input File = x3_transient.sif
+!   Post File = transient.vtu
+! End
 
 Constants
   Gravity(4) = 0 -1 0 9.82
@@ -39,8 +54,8 @@ Solver 1
   Exec Solver = Always
   Stabilize = True
   Optimize Bandwidth = True
-  Steady State Convergence Tolerance = 1.0e-7
-  Nonlinear System Convergence Tolerance = 1./0e-9
+  Steady State Convergence Tolerance = 1.0e-8
+  Nonlinear System Convergence Tolerance = 1.0e-9
   Nonlinear System Max Iterations = 20
   Nonlinear System Newton After Iterations = 30
   Nonlinear System Newton After Tolerance = 1.0e-3
@@ -83,7 +98,7 @@ End
 Boundary Condition 2
   Target Boundaries(1) = 2 
   Name = "inlet"
-  Velocity 2 = 0.01
+  Velocity 2 = 5.0
   Velocity 1 = 0
 End
 
