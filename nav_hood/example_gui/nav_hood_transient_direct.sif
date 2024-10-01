@@ -1,0 +1,130 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "."
+  Include Path ""
+  Results Directory ""
+End
+
+
+
+Simulation
+  Max Output Level = 5
+  Coordinate System = Cartesian 2D
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Transient
+  Steady State Max Iterations = 5
+  Timestepping Method = BDF
+  BDF Order = 2
+  Timestep Sizes = 1.0
+  Timestep Intervals = 4000
+  Output Intervals = 1
+  Post File = nav_hood_transient_direct.vtu
+End
+
+! Simulation
+!   Max Output Level = 5
+!   Coordinate System = Cartesian
+!   Coordinate Mapping(3) = 1 2 3
+!   Simulation Type = Steady state
+!   Steady State Max Iterations = 5
+!   Output Intervals(1) = 1
+!   Solver Input File = case.sif
+!   Post File = case.vtu
+! End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "Body 1"
+  Equation = 1
+  Material = 1
+End
+
+
+Solver 1
+  Equation = Navier-Stokes
+  Variable = Flow Solution[Velocity:2 Pressure:1]
+  Procedure = "FlowSolve" "FlowSolver"
+  Exec Solver = Always
+  Stabilize = True
+  Optimize Bandwidth = True
+  Steady State Convergence Tolerance = 1.0e-7
+  Nonlinear System Convergence Tolerance = 1.0e-9
+  Nonlinear System Max Iterations = 20
+  Nonlinear System Newton After Iterations = 3
+  Nonlinear System Newton After Tolerance = 1.0e-3
+  Nonlinear System Relaxation Factor = 1
+  Linear System Solver = Direct
+  Linear System Direct Method = Umfpack
+End
+
+
+
+! Solver 1
+!   Equation = Navier-Stokes
+!   Variable = Flow Solution[Velocity:2 Pressure:1]
+!   Procedure = "FlowSolve" "FlowSolver"
+!   Exec Solver = Always
+!   Stabilize = True
+!   Optimize Bandwidth = True
+!   Steady State Convergence Tolerance = 1.0e-7
+!   Nonlinear System Convergence Tolerance = 1.0e-9
+!   Nonlinear System Max Iterations = 200
+!   Nonlinear System Newton After Iterations = 3
+!   Nonlinear System Newton After Tolerance = 1.0e-3
+!   Nonlinear System Relaxation Factor = 1
+!   Linear System Solver = Iterative
+!   Linear System Iterative Method = BiCGStab
+!   Linear System Max Iterations = 500000
+!   Linear System Convergence Tolerance = 1.0e-10
+!   BiCGstabl polynomial degree = 2
+!   Linear System Preconditioning = ILU0
+!   Linear System ILUT Tolerance = 1.0e-4
+!   Linear System Abort Not Converged = False
+!   Linear System Residual Output = 10
+!   Linear System Precondition Recompute = 1
+! End
+
+Equation 1
+  Name = "Equation 1"
+  Active Solvers(1) = 1
+End
+
+Material 1
+  Name = "Air (room temperature)"
+  Relative Permittivity = 1.00059
+  Viscosity = 1.983e-5
+  Density = 1.205
+  Sound speed = 343.0
+  Heat expansion Coefficient = 3.43e-3
+  Heat Conductivity = 0.0257
+  Heat Capacity = 1005.0
+End
+
+Boundary Condition 1
+  Target Boundaries(1) = 20 
+  Name = "outlet"
+  Velocity 1 = 0.01
+  Velocity 2 = 0
+End
+
+Boundary Condition 2
+  Target Boundaries(1) = 54 
+  Name = "inlet"
+  Velocity 1 = 0
+End
+
+Boundary Condition 3
+  Target Boundaries(52) = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 
+  Name = "walls"
+  Velocity 1 = 0
+  Velocity 2 = 0
+End
