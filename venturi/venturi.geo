@@ -16,12 +16,12 @@ Point(14) = { -1.22602114978500E+00,  -2.60699681161800E+00, 0., d1};
 Point(15) = { -1.22602114978500E+00,  +1.98765348351300E+00, 0., d1};
 Point(16) = { -4.12674259871000E-01,  +3.40660042284000E-01, 0., d1};
 
-Point(17) = { 0.0, 0.0 , 0., d1};
-Point(18) = { 0.0, 1.0 , 0., d1};
-Point(19) = { 0.0, 0.5 , 0., d1};
-Point(20) = { 1.2 , 0.38, d1};
-Point(21) = { 0.0, -0.5 , 0., d1};
-Point(22) = { 0.0, -1.0 , 0., d1};
+// Point(17) = { 0.0, 0.0 , 0., d1};
+// Point(18) = { 0.0, 1.0 , 0., d1};
+// Point(19) = { 0.0, 0.5 , 0., d1};
+// Point(20) = { 1.2 , 0.38, d1};
+// Point(21) = { 0.0, -0.5 , 0., d1};
+// Point(22) = { 0.0, -1.0 , 0., d1};
 
 
 Line (1) = {1, 2};
@@ -47,21 +47,21 @@ Plane Surface(1) = {1};
 
 
 
-Field[50] = MathEval; //Generate Field
-Field[50].F = "1.0";
-//+ Background Field = 50;
+// Field[50] = MathEval; //Generate Field
+// Field[50].F = "1.0";
+// //+ Background Field = 50;
 
-Field[1] = Distance;
-Field[1].PointsList = {17,18,19,20,21,22};
-Field[1].Sampling = 200;
+// Field[1] = Distance;
+// Field[1].PointsList = {17,18,19,20,21,22};
+// Field[1].Sampling = 200;
 
-Field[2] = Threshold;
-Field[2].InField = 1;
-Field[2].SizeMin = d1 / 50;
-Field[2].SizeMax = d1;
-Field[2].DistMin = 0.001;
-Field[2].DistMax = 6.5;
+// Field[2] = Threshold;
+// Field[2].InField = 1;
+// Field[2].SizeMin = d1 / 50;
+// Field[2].SizeMax = d1;
+// Field[2].DistMin = 0.001;
+// Field[2].DistMax = 6.5;
 
-Field[7] = Min;
-Field[7].FieldsList = {2, 50};
-Background Field = 7;
+// Field[7] = Min;
+// Field[7].FieldsList = {2, 50};
+// Background Field = 7;
