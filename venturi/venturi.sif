@@ -1,8 +1,8 @@
 Header
   CHECK KEYWORDS Warn
-  Mesh DB "." "."
+  Mesh DB "." "venturi
   Include Path ""
-  Results Directory ""
+  Results Directory "venturi_transient"
 End
 
 
@@ -73,6 +73,27 @@ Solver 1
   Linear System Precondition Recompute = 1
 End
 
+
+! Solver 1
+!   Equation = Navier-Stokes
+!   Variable = Flow Solution[Velocity:3 Pressure:1]
+!   Procedure = "FlowSolve" "FlowSolver"
+!   Exec Solver = Always
+!   Stabilize = True
+!   Optimize Bandwidth = True
+!   Steady State Convergence Tolerance = 1.0e-5
+!   Nonlinear System Convergence Tolerance = 1.0e-7
+!   Nonlinear System Max Iterations = 50
+!   Nonlinear System Newton After Iterations = 3
+!   Nonlinear System Newton After Tolerance = 1.0e-3
+!   Nonlinear System Relaxation Factor = 1
+!   Linear System Solver = Direct
+!   Linear System Direct Method = Umfpack
+! End
+
+
+
+
 Equation 1
   Name = "Equation 1"
   Active Solvers(1) = 1
@@ -112,5 +133,5 @@ Boundary Condition 3
   Target Boundaries(1) = 4 
   Name = "inlet"
   Velocity 1 = 0
-  Velocity 2 = 0.2
+  Velocity 2 = 1.0
 End
