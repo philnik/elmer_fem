@@ -1,9 +1,9 @@
-Metadata for SaveLine file: ./saveline.dat
+Metadata for SaveLine file: ./fname
 Elmer version: 9.0
 Elmer revision: Release
 Elmer compilation date: 2024-08-16
 Solver input file: beam2d.sif
-File started at: 2024/10/10 23:29:11
+File started at: 2024/10/10 23:31:37
 Number of data nodes for each step
   bc nodes: 101
   polyline nodes: 4

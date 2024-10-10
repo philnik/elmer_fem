@@ -61,7 +61,7 @@ Solver 2
  Equation = "SaveLine"
 Procedure = File "SaveData" "SaveLine"
 Variable 1 = String Displacement
-Filename =  1000.dat
+Filename =  _fname_
 File Append = Logical True
 Polyline Coordinates(2,2) = Real 0.0 0.0 2000.0 0.0
 End
@@ -120,7 +120,7 @@ End
 
 
 Boundary Condition 3
-  Target Coordinates(1,2) = 1000 0
+  Target Coordinates(1,2) = _y0_ 0
   Name = "reaction"
   Displacement 3 = 0
   Displacement 2 = 0 
@@ -143,20 +143,5 @@ Boundary Condition 2
    Save Line = Logical True
   Name = "force"
   Force 2 = Variable Coordinate 1
-  Real MATC "4*tx/2000.0"
-End
-
-End
- 0
-! End
-
-
-
-
-Boundary Condition 2
-  Target Boundaries(1000) = 3
-   Save Line = Logical True
-  Name = "force"
-  Force 2 = Variable Coordinate 1000
   Real MATC "4*tx/2000.0"
 End
