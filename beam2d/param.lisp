@@ -1,13 +1,21 @@
 (ql:quickload "alexandria")
 (ql:quickload "cl-ppcre")
+(ql:quickload :cl-interpol)
+(ql:quickload :html-template)
+(use-package :cl-interpol)
+(use-package :html-template)
+(enable-interpol-syntax)
+(named-readtables:in-readtable :interpol-syntax)
 
 
 ;;; defparameter
 
-(defparameter input_sif_file "beam2d.sif.tmpl")
-(defparameter output_sif_file "beam2d.sif")
-(defparameter plot_line "plot_line.plt")
-(defparameter string_sif (alexandria:read-file-into-string input_sif_file))
+(defparameter *INPUT_SIF_FILE* #p"beam2d.sif.tmpl")
+(defparameter *OUTPUT-SIF-FILE* "beam2d.sif")
+(defparameter *GNUPLOT_FILE* "plot_file.plt")
+(defparameter *STRING_SIF* "")
+(defparameter *STRING_SIF* (alexandria:read-file-into-string *INPUT_SIF_FILE*))
+
 
 ;;; class
 
@@ -19,12 +27,25 @@
        :initform 1000
        :type real
        :documentation "y0")
+  (id :accessor  id
+       :reader id
+       :initarg :id
+       :initform 0
+       :type integer
+       :documentation "identification number")
+   
+  (sif-fname :accessor  sif-fname
+	    :reader sif-fname
+	    :initarg :sif-fname
+	    :initform "beam2d.sif"
+	    :type string
+	    :documentation "sif file name")
    (fname :accessor  fname
-	  :reader sif-fname
-         :initarg :fname
-	 :initform "1000.dat"
-         :type string 
-	 :documentation "fname")
+	  :reader fname
+          :initarg :fname
+	  :initform "1000.dat"
+          :type string 
+	  :documentation "fname")
    ))
 
 
@@ -38,7 +59,7 @@
 	 :type list
        :documentation "case_sif")
    (gnuplot_file :accessor  gnuplot_file
-		 :reader sif-fname
+		 :reader gnuplot_file
 		 :initarg :fname
 		 :initform "1000.plt"
 		 :type string 
@@ -55,29 +76,36 @@
 (setq sif_test (make-instance 'sif-family))
 ;;;
 
-(defun solve_problem ()
+(defun run_solver (fname)
 (uiop:run-program (list "ElmerSolver"
-                        "beam2d.sif"
+                        fname
                         "")
                   :output :string
                   :error-output :string
                   :ignore-error-status t))
 
+
+
 (defun make-gnuplot-string (sif-problems)
   (let ((sif_list (sif-list sif-problems))
 	(png_file (png_file sif-problems)))
-(with-output-to-string (stream)
-  (format stream "set terminal png~%")
-  (format stream "unset key ~%")
-  (format stream (concatenate 'string "set output \"" png_file  "\" ~%"))
-  (format stream "set term png size 1000,1000 ~%")
-  (format stream "set grid ~%")
-  (format stream "plot \\~%")
-  (loop for i in sif_list
+    (with-output-to-string (stream)
+(format stream
+#?"
+set terminal png
+unset key
+set output \"${png_file}
+set term png size 1000,1000
+set grid
+plot \\
+"
+)
+(loop for i in sif_list
 	do (let ((kk (fname i)))
 	     (format stream "\"~a\" using 4:8 with lines,\\~%" kk)
 	     ))
   )))
+
   
 (defun replace_string (from to mystr)
   (cl-ppcre:regex-replace-all from
@@ -91,43 +119,79 @@
 
 
 (defun add_sif (i)
-  (make-instance 'sif :y0 i  :fname (format nil "images/d6-1000_~a.dat" i))
+  (make-instance 'sif :y0 i
+		      :id i
+		      :sif-fname (format nil "sif/~a.sif" i)
+		      :fname (format nil "images/d6-1000_~a.dat" i))
   )
 
-(defun write_sif_case (sif_case)
+(defun write_sif_case2 (sif_case)
   (let* ((a1 (replace_string "_y0_"
 			     (format nil "~a" (y0 sif_case))
-			     string_sif))
+			     *STRING_SIF*))
 	 (a2 (replace_string "_fname_"
 			     (fname sif_case)
 			     a1)))
-    (alexandria:write-string-into-file a2
-				       output_sif_file
+    (alexandria:write-string-into-file (sif-fname sif-case)
+				       *OUTPUT-SIF-FILE*
 				       :if-exists :overwrite))
   )
+
+
+;; (with-open-file (foo "no-such-file" :direction :output :if-does-not-exist nil)
+
+(defparameter *default-template-output* nil)
+
+(defun write_sif_case (sif_case)
+  
+  (with-input-from-string (istream *STRING_SIF*)
+    
+    (with-open-file (ostream (sif-fname sif_case) :direction :output
+						  :if-exists :supersede
+						  :if-does-not-exist :create)
+    (fill-and-print-template istream
+			     '(:y0 2000.0
+			       :force "\'400*tx/1+800\'"
+			       :export_data "plotline.dat"
+			       )
+			     :stream ostream
+			     )))
+  (format t "writing case:~a~%" (sif-fname sif_case))
+  )
+
+(write_sif_case (nth 0 sif_list))
+
 
 (defun run_sif_list (sif_list)
   (loop for sif_case in sif_list
 	do (progn
 	     (write_sif_case sif_case)
-	     (solve_problem)
+	     (run_solver (sif-fname sif_case))
 	     )
 	))
 
 
 (defun myrange ()
-  (loop for i from 1 to 10 
-	collect (+ (* i 400  ) 0 )
+  (loop for i from 1 to 8
+	collect (+ (* i 350  ) 100  )
 	))
 
 
+(defun print_sif_fnames (sif_list)
+  (mapcar #'(lambda (i) (sif-fname i)) sif_list))
+
 (setq sif_list (mapcar #'(lambda (i) (add_sif i)) (myrange)))
+
+
+
+(print_sif_fnames sif_list)
 
 (setq sif_test (make-instance 'sif-family))
 (setf (sif-list sif_test) sif_list)
-(setf (gnuplot_file sif_test) "plot_line.plt")
+(setf (gnuplot_file sif_test) "plot_file.plt")
 (sif-list sif_test)
 (gnuplot_file sif_test)
+
     
 (defun export_files (problem)
   (with-open-file (stream (gnuplot_file problem) :direction :output 
