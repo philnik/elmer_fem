@@ -10,17 +10,20 @@ build:
 run:
 	ElmerSolver beam2d.sif
 
-plot:
+
+lisp: clean
+	beam2d.exe
+
+
+plot:	lisp
 	gnuplot plot_file.plt
 	wsl qiv image.png
 
 clean:
-	rm sif/*
-	rm vtu/*
-	rm *~
+	rm -f sif/* 2> /dev/null
+	rm -f vtu/* 2> /dev/null
+	rm -f *~ 2> /dev/null
 
-sif: clean
-	sbcl --load param.lisp
+blisp: 
+	sbcl --load lisp/run.lisp
 
-all: sif plot
-	echo "hello"

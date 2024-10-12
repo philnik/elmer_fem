@@ -6,13 +6,16 @@
 (use-package :html-template)
 (enable-interpol-syntax)
 (named-readtables:in-readtable :interpol-syntax)
-
+(defparameter *string-modifier* #'identity)
 
 ;;; defparameter
 
-(defparameter *INPUT_SIF_FILE* #p"beam2d.sif.tmpl")
-(defparameter *OUTPUT-SIF-FILE* "beam2d.sif")
-(defparameter *GNUPLOT_FILE* "plot_file.plt")
+(defparameter *ROOT* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/")
+
+(defparameter *INPUT_SIF_FILE* #?"${*ROOT*}/beam2d.sif.tmpl")
+(defparameter *OUTPUT-SIF-FILE* #?"${*ROOT*}/beam2d.sif")
+(defparameter *GNUPLOT_FILE* #?"${*ROOT*}/plot_file.plt")
+
 (defparameter *STRING_SIF* "")
 (defparameter *STRING_SIF* (alexandria:read-file-into-string *INPUT_SIF_FILE*))
 (defparameter *default-template-output* nil)
@@ -83,13 +86,17 @@
    ))
 
 
+
+
+
+
 (defun i2str (i)
   (format nil "~a" i)
   )
 
 (defun myrange ()
-  (loop for i from 1 to 5
-	collect (+ (* i 800  ) 0  )
+  (loop for i from 1 to 19
+	collect (+ (* i 200  ) 0  )
 	))
 
 
@@ -98,20 +105,20 @@
 ;;;
 
 (defun run_solver (fname)
-(uiop:run-program (list "ElmerSolver"
-                        fname
-                        "")
-                  :output :string
-                  :error-output :string
-                  :ignore-error-status nil))
-
-
+  (progn
+    (format t #?"ElmerSolver ${fname}")
+    (uiop:run-program (list "ElmerSolver"
+                            fname
+                            "")
+                      :output :string
+                      :error-output :string
+                      :ignore-error-status nil)))
 
 (defun make-gnuplot-string (sif-problems)
   (let ((sif_list (sif-list sif-problems))
 	(png_file (png_file sif-problems)))
     (with-output-to-string (stream)
-(format stream
+      (format stream
 #?"
 set terminal png
 unset key
@@ -119,8 +126,8 @@ set output \"${png_file}
 set term png size 1000,1000
 set grid
 plot \\
-"
-)
+")
+
 (loop for i in sif_list
 	do (let ((kk (fname i)))
 	     (format stream "\"~a\" using 4:8 with lines,\\~%" kk)
@@ -142,17 +149,16 @@ plot \\
 (defun add_sif (i)
   (make-instance 'sif :y0 i
 		      :id i
-		      :sif-fname (format nil "sif/~a.sif" i)
-		      :fname (format nil "vtu/~a.dat" i))
-  )
-
+		      :sif-fname #?"${*ROOT*}/sif/${i}.sif"
+		      :fname #?"${*ROOT*}/vtu/${i}.dat"
+		      ))
 
 
 (defun write_sif_case (sif_case)
   (setf id (i2str (id sif_case)))
-  (setf sif_file (concatenate 'string id ".sif"))
-  (setf vtu_file (concatenate 'string id ".vtu"))
-  (setf export_data (concatenate 'string id ".dat"))
+  (setf sif_file #?"${*ROOT*}/${id}.sif")
+  (setf vtu_file #?"${*ROOT*}/vtu/${id}.vtu")
+  (setf export_data #?"${*ROOT*}/vtu/${id}.dat")
   (setf mount_pos1 (concatenate 'string " " id))
   (with-input-from-string (istream *STRING_SIF*)
     
@@ -161,7 +167,7 @@ plot \\
 						  :if-does-not-exist :create)
     (eval `(fill-and-print-template ,istream
 			     '(:y0 ,mount_pos1
-			       :force "400*tx/1+800"
+			       :force "\"-1000*tx\""
 			       :export_data ,export_data
 			       :sif_file ,sif_file
 			       :vtu_file ,vtu_file
@@ -183,13 +189,6 @@ plot \\
 (defun print_sif_fnames (sif_list)
   (mapcar #'(lambda (i) (sif-fname i)) sif_list))
 
-(setq sif_list (mapcar #'(lambda (i) (add_sif i)) (myrange)))
-(print_sif_fnames sif_list)
-(setq sif_test (make-instance 'sif-family))
-(setf (sif-list sif_test) sif_list)
-(setf (gnuplot_file sif_test) "plot_file.plt")
-(sif-list sif_test)
-(gnuplot_file sif_test)
 
     
 (defun export_files (problem)
@@ -200,10 +199,31 @@ plot \\
     )
   )
 
-(export_files sif_test)
-    
-(run_sif_list sif_list)
+(defun run-them ()
+  (progn
+    (setq sif_list (mapcar #'(lambda (i) (add_sif i)) (myrange)))
+    (print_sif_fnames sif_list)
+    (setq sif_test (make-instance 'sif-family))
+    (setf (sif-list sif_test) sif_list)
+    (setf (gnuplot_file sif_test) *GNUPLOT_FILE*)
+    (sif-list sif_test)
+    (gnuplot_file sif_test)
+    (export_files sif_test)
+    (run_sif_list sif_list)
+    )
+  )
 
+;(run-them)
+
+
+
+;; (setq sif_list (mapcar #'(lambda (i) (add_sif i)) (myrange)))
+;; (print_sif_fnames sif_list)
+;; (setq sif_test (make-instance 'sif-family))
+;; (setf (sif-list sif_test) sif_list)
+;; (setf (gnuplot_file sif_test) "plot_file.plt")
+;; (sif-list sif_test)
+;; (gnuplot_file sif_test)
 
 
 

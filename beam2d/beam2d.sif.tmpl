@@ -1,8 +1,8 @@
 Header
   CHECK KEYWORDS Warn
-  Mesh DB "." "beam2d"
+  Mesh DB "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/beam2d"
   Include Path ""
-  Results Directory "vtu"
+  Results Directory "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/vtu/"
 End
 
 Simulation
@@ -84,13 +84,13 @@ Material 1
 End
 
 
-Boundary Condition 1
-  Target Boundaries(2) = 1  6 
-  Name = "reaction"
-  Displacement 3 = 0
-  Displacement 2 = 0
-  Displacement 1 = 0
-End
+! Boundary Condition 1
+!   Target Boundaries(2) = 1  6 
+!   Name = "reaction"
+!   Displacement 3 = 0
+!   Displacement 2 = 0
+!   Displacement 1 = 0
+! End
 
 
 Boundary Condition 2
@@ -107,12 +107,10 @@ End
 
 
 Boundary Condition 3
-  Target Coordinates(6,2) = <!-- TMPL_VAR y0 --> 0
-  	 		    0 0 
+  Target Coordinates(4,2) = <!-- TMPL_VAR y0 --> 0
+  	 		    0 0
+			    2000 0 
   	 		    4000 0
-			    2000 0
-			    3000 0
-			    1000 0
   Name = "r1"
 
   Displacement 3 = 0
