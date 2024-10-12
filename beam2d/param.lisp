@@ -15,7 +15,7 @@
 (defparameter *GNUPLOT_FILE* "plot_file.plt")
 (defparameter *STRING_SIF* "")
 (defparameter *STRING_SIF* (alexandria:read-file-into-string *INPUT_SIF_FILE*))
-
+(defparameter *default-template-output* nil)
 
 ;;; class
 
@@ -78,12 +78,9 @@
   (format nil "~a" i)
   )
 
-
-
-
 (defun myrange ()
-  (loop for i from 1 to 12
-	collect (+ (* i 250  ) 100  )
+  (loop for i from 1 to 5
+	collect (+ (* i 800  ) 0  )
 	))
 
 
@@ -97,7 +94,7 @@
                         "")
                   :output :string
                   :error-output :string
-                  :ignore-error-status t))
+                  :ignore-error-status nil))
 
 
 
@@ -137,25 +134,10 @@ plot \\
   (make-instance 'sif :y0 i
 		      :id i
 		      :sif-fname (format nil "sif/~a.sif" i)
-		      :fname (format nil "images/d6-1000_~a.dat" i))
-  )
-
-(defun write_sif_case2 (sif_case)
-  (let* ((a1 (replace_string "_y0_"
-			     (format nil "~a" (y0 sif_case))
-			     *STRING_SIF*))
-	 (a2 (replace_string "_fname_"
-			     (fname sif_case)
-			     a1)))
-    (alexandria:write-string-into-file (sif-fname sif-case)
-				       *OUTPUT-SIF-FILE*
-				       :if-exists :overwrite))
+		      :fname (format nil "vtu/~a.dat" i))
   )
 
 
-;; (with-open-file (foo "no-such-file" :direction :output :if-does-not-exist nil)
-
-(defparameter *default-template-output* nil)
 
 (defun write_sif_case (sif_case)
   (setf id (i2str (id sif_case)))
@@ -180,8 +162,6 @@ plot \\
   (format t "writing case:~a~%" (sif-fname sif_case))
   )
 
-(write_sif_case (nth 0 sif_list))
-
 
 (defun run_sif_list (sif_list)
   (loop for sif_case in sif_list
@@ -191,17 +171,11 @@ plot \\
 	     )
 	))
 
-
-
 (defun print_sif_fnames (sif_list)
   (mapcar #'(lambda (i) (sif-fname i)) sif_list))
 
 (setq sif_list (mapcar #'(lambda (i) (add_sif i)) (myrange)))
-
-
-
 (print_sif_fnames sif_list)
-
 (setq sif_test (make-instance 'sif-family))
 (setf (sif-list sif_test) sif_list)
 (setf (gnuplot_file sif_test) "plot_file.plt")
