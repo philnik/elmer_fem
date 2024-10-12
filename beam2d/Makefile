@@ -11,5 +11,16 @@ run:
 	ElmerSolver beam2d.sif
 
 plot:
-	gnuplot plot_line.plt
+	gnuplot plot_file.plt
 	wsl qiv image.png
+
+clean:
+	rm sif/*
+	rm vtu/*
+	rm *~
+
+sif: clean
+	sbcl --load param.lisp
+
+all: sif plot
+	echo "hello"

@@ -39,7 +39,16 @@
 	    :initarg :sif-fname
 	    :initform "beam2d.sif"
 	    :type string
-	    :documentation "sif file name")
+	     :documentation "sif file name")
+
+   (boundary_targets :accessor  boundary_targets
+		     :reader boundary_targets
+		     :initarg :boundary_targets
+		     :initform "targets"
+		     :type string
+		     :documentation "boundary_targets")
+
+   
    (fname :accessor  fname
 	  :reader fname
           :initarg :fname

@@ -1,8 +1,0 @@
-
-
-(ql:quickload "alexandria")
-
-
-(defparameter sif_file "beam2d.sif")
-
-(alexandria:read-file-into-string sif_file)

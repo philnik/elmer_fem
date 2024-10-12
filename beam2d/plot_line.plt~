@@ -1,5 +1,0 @@
-
-
-
-
-plot "saveline.dat" using 4:8 with lines
