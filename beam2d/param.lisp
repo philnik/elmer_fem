@@ -73,6 +73,21 @@
    
    ))
 
+
+(defun i2str (i)
+  (format nil "~a" i)
+  )
+
+
+
+
+(defun myrange ()
+  (loop for i from 1 to 12
+	collect (+ (* i 250  ) 100  )
+	))
+
+
+
 (setq sif_test (make-instance 'sif-family))
 ;;;
 
@@ -143,19 +158,25 @@ plot \\
 (defparameter *default-template-output* nil)
 
 (defun write_sif_case (sif_case)
-  
+  (setf id (i2str (id sif_case)))
+  (setf sif_file (concatenate 'string id ".sif"))
+  (setf vtu_file (concatenate 'string id ".vtu"))
+  (setf export_data (concatenate 'string id ".dat"))
+  (setf mount_pos1 (concatenate 'string " " id))
   (with-input-from-string (istream *STRING_SIF*)
     
     (with-open-file (ostream (sif-fname sif_case) :direction :output
 						  :if-exists :supersede
 						  :if-does-not-exist :create)
-    (fill-and-print-template istream
-			     '(:y0 2000.0
-			       :force "\'400*tx/1+800\'"
-			       :export_data "plotline.dat"
+    (eval `(fill-and-print-template ,istream
+			     '(:y0 ,mount_pos1
+			       :force "400*tx/1+800"
+			       :export_data ,export_data
+			       :sif_file ,sif_file
+			       :vtu_file ,vtu_file
 			       )
-			     :stream ostream
-			     )))
+			     :stream ,ostream
+			     ))))
   (format t "writing case:~a~%" (sif-fname sif_case))
   )
 
@@ -170,11 +191,6 @@ plot \\
 	     )
 	))
 
-
-(defun myrange ()
-  (loop for i from 1 to 8
-	collect (+ (* i 350  ) 100  )
-	))
 
 
 (defun print_sif_fnames (sif_list)
