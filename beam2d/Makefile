@@ -2,15 +2,9 @@
 
 gmsh = "C:\Program Files\FreeCAD 0.21\bin\gmsh.exe"
 
-build:
+mesh:
 	$(gmsh) -2 beam2d.geo 
 	ElmerGrid 14 2 beam2d.msh -autoclean
-	ElmerSolver beam2d.sif
-
-run:
-	ElmerSolver beam2d.sif
-
-
 
 f90:
 	"C:\Users\filip\opt\ElmerFEM-gui-mpi-Windows-AMD64\stripped_gfortran\bin\x86_64-w64-mingw32-gfortran.exe" force.f90  -fallow-argument-mismatch  -DCONTIG= -DMINGW32 -DWIN32 -DHAVE_EXECUTECOMMANDLINE -DUSE_ISO_C_BINDINGS -DUSE_ARPACK -O3 -DNDEBUG -O3  -shared -I"C:\Users\filip\opt\ElmerFEM-gui-mpi-Windows-AMD64\share\elmersolver\include" -L"C:\Users\filip\opt\ElmerFEM-gui-mpi-Windows-AMD64\bin" -shared -lelmersolver -o force.dll
@@ -33,3 +27,5 @@ clean:
 blisp: 
 	sbcl --load lisp/run.lisp
 
+
+all: clean mesh f90 blisp lisp plot 
