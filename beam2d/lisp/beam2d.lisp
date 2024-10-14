@@ -148,7 +148,7 @@ End
 
 (defun myrange ()
   (loop for i from 1 to 9
-	collect (+ (* i 200  ) 0  )
+	collect (+ (* i 100  ) 0  )
 	))
 
 

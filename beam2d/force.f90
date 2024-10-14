@@ -9,7 +9,7 @@ TYPE(Model_t) :: Model
 INTEGER :: n
 REAL(KIND=dp) :: f, g
 
-g = -1000*f
+g = -10000*f
 END FUNCTION myforce
 
 SUBROUTINE mybc(Model, n, BC, state, dt, time, node, x, y, z)

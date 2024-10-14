@@ -2,14 +2,9 @@
 
 gmsh = "C:\Program Files\FreeCAD 0.21\bin\gmsh.exe"
 
-build:
+mesh:
 	$(gmsh) -2 beam2d.geo 
 	ElmerGrid 14 2 beam2d.msh -autoclean
-	ElmerSolver beam2d.sif
-
-run:
-	ElmerSolver beam2d.sif
-
 
 
 f90:
@@ -33,3 +28,5 @@ clean:
 blisp: 
 	sbcl --load lisp/run.lisp
 
+
+all: clean mesh f90 blisp plot

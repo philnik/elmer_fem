@@ -3,10 +3,10 @@ Elmer version: 9.0
 Elmer revision: Release
 Elmer compilation date: 2024-08-16
 Solver input file: c:/users/filip/appdata/roaming/fem/elmer_fem/beam2d//200.sif
-File started at: 2024/10/15 00:10:16
+File started at: 2024/10/15 01:29:35
 Number of data nodes for each step
-  bc nodes: 101
-  polyline nodes: 78
+  bc nodes: 201
+  polyline nodes: 396
   circle nodes: 0
   isocurve nodes: 0
 Data on different columns
