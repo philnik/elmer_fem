@@ -1,4 +1,11 @@
-<!-- TMPL_VAR text_sif_header -->
+
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/beam2d"
+  Include Path ""
+  Results Directory "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/vtu/"
+End
+
 
 
 Simulation
@@ -8,8 +15,8 @@ Simulation
   Simulation Type = Steady state
   Steady State Max Iterations = 1
   Output Intervals(1) = 1
-  Solver Input File =  <!-- TMPL_VAR sif_file -->
-  Post File = <!-- TMPL_VAR vtu_file -->
+  Solver Input File =  c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d//1800.sif
+  Post File = c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d//vtu/1800.vtu
 End
 
 Constants
@@ -57,7 +64,7 @@ Solver 2
  Equation = "SaveLine"
 Procedure = File "SaveData" "SaveLine"
 Variable 1 = String Displacement
-Filename =  <!-- TMPL_VAR export_data -->
+Filename =  c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d//vtu/1800.dat
 File Append = Logical True
 Polyline Coordinates(2,2) = Real 0.0 0.0 2000.0 0.0
 End
@@ -105,7 +112,7 @@ End
 
 
 Boundary Condition 3
-  Target Coordinates(6,2) = <!-- TMPL_VAR y0 --> 0
+  Target Coordinates(6,2) =  1800 0
   	 		    0 0
 			    1000 0
 			    2000 0

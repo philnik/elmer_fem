@@ -11,7 +11,13 @@ run:
 	ElmerSolver beam2d.sif
 
 
-lisp: clean
+
+f90:
+	"C:\Users\filip\opt\ElmerFEM-gui-mpi-Windows-AMD64\stripped_gfortran\bin\x86_64-w64-mingw32-gfortran.exe" force.f90  -fallow-argument-mismatch  -DCONTIG= -DMINGW32 -DWIN32 -DHAVE_EXECUTECOMMANDLINE -DUSE_ISO_C_BINDINGS -DUSE_ARPACK -O3 -DNDEBUG -O3  -shared -I"C:\Users\filip\opt\ElmerFEM-gui-mpi-Windows-AMD64\share\elmersolver\include" -L"C:\Users\filip\opt\ElmerFEM-gui-mpi-Windows-AMD64\bin" -shared -lelmersolver -o force.dll
+	cp force.dll ./sif/force.dll
+
+
+lisp: clean f90
 	beam2d.exe
 
 

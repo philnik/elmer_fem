@@ -20,10 +20,67 @@
 (defparameter *STRING_SIF* (alexandria:read-file-into-string *INPUT_SIF_FILE*))
 (defparameter *default-template-output* nil)
 
+(defparameter  *Mesh_DB* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/beam2d")
+(defparameter *Results_Directory* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/vtu/")
+
+(defun header_string (mesh_db results_directory)
+#?"
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB \"${mesh_db}\"
+  Include Path \"\"
+  Results Directory \"${results_directory}\"
+End
+")
+
+(format t 
+(header_string *Mesh_DB* *Results_Directory*)
+)
+
 ;;; class
+
+(defclass %sif_header ()
+  ((mesh_db :accessor  mesh_db
+       :reader mesh_db
+       :initarg :mesh_db
+       :initform ""
+       :type string
+       :documentation "mesh db")
+   (results_directory :accessor  results_directory
+       :reader results_directory
+       :initarg :results_directory
+       :initform ""
+       :type string
+		      :documentation "results directory")
+   (text :accessor  text
+       :reader text
+       :initarg :text
+       :initform ""
+       :type string
+		      :documentation "text")
+   ))
+
+
+(defun make_sif_header()
+  (let (( sif_header (make-instance '%sif_header
+				:mesh_db *Mesh_DB*
+				:Results_Directory *Results_Directory*
+				    )))
+    (progn
+      (setf (text sif_header) (header_string (mesh_db sif_header) (results_directory sif_header)))
+      (text sif_header)
+      sif_header
+    )))
 
 (defclass sif ()
   (
+  (header :accessor  header
+       :reader header
+       :initarg :header
+       :initform ""
+       :type string
+       :documentation "header")
+   
    (y0 :accessor  y0
        :reader sif-y0
        :initarg :y0
@@ -85,17 +142,12 @@
    
    ))
 
-
-
-
-
-
 (defun i2str (i)
   (format nil "~a" i)
   )
 
 (defun myrange ()
-  (loop for i from 1 to 19
+  (loop for i from 1 to 9
 	collect (+ (* i 200  ) 0  )
 	))
 
@@ -107,12 +159,11 @@
 (defun run_solver (fname)
   (progn
     (format t #?"ElmerSolver ${fname}")
-    (uiop:run-program (list "ElmerSolver"
-                            fname
-                            "")
+    (uiop:run-program (list "ElmerSolver" fname "")
                       :output :string
                       :error-output :string
                       :ignore-error-status nil)))
+
 
 (defun make-gnuplot-string (sif-problems)
   (let ((sif_list (sif-list sif-problems))
@@ -127,7 +178,6 @@ set term png size 1000,1000
 set grid
 plot \\
 ")
-
 (loop for i in sif_list
 	do (let ((kk (fname i)))
 	     (format stream "\"~a\" using 4:8 with lines,\\~%" kk)
@@ -155,27 +205,36 @@ plot \\
 
 
 (defun write_sif_case (sif_case)
-  (setf id (i2str (id sif_case)))
-  (setf sif_file #?"${*ROOT*}/${id}.sif")
-  (setf vtu_file #?"${*ROOT*}/vtu/${id}.vtu")
-  (setf export_data #?"${*ROOT*}/vtu/${id}.dat")
-  (setf mount_pos1 (concatenate 'string " " id))
-  (with-input-from-string (istream *STRING_SIF*)
-    
-    (with-open-file (ostream (sif-fname sif_case) :direction :output
-						  :if-exists :supersede
-						  :if-does-not-exist :create)
-    (eval `(fill-and-print-template ,istream
-			     '(:y0 ,mount_pos1
-			       :force "\"-1000*tx\""
-			       :export_data ,export_data
-			       :sif_file ,sif_file
-			       :vtu_file ,vtu_file
-			       )
-			     :stream ,ostream
-			     ))))
+  (let ((id (i2str (id sif_case))))
+    (let ((sif_file #?"${*ROOT*}/${id}.sif")
+	  (vtu_file #?"${*ROOT*}/vtu/${id}.vtu")
+	  (export_data #?"${*ROOT*}/vtu/${id}.dat")
+	  (mount_pos1 (concatenate 'string " " id))
+	  (string-sif (alexandria:read-file-into-string *INPUT_SIF_FILE*))
+	  (text_sif_header (text (make_sif_header)))
+	  )
+      
+      (with-input-from-string (istream string-sif)
+	(with-open-file (ostream (sif-fname sif_case) :direction :output
+						      :if-exists :supersede
+						      :if-does-not-exist :create)
+	  (eval `(fill-and-print-template ,istream
+					  '(:y0 ,mount_pos1
+					    :force "\"-1000*tx\""
+					    :export_data ,export_data
+					    :sif_file ,sif_file
+					    :vtu_file ,vtu_file
+					    :text_sif_header ,text_sif_header
+					    )
+					  :stream ,ostream
+					  ))))))
   (format t "writing case:~a~%" (sif-fname sif_case))
   )
+
+
+;;;!Real MATC <!-- TMPL_VAR force -->
+
+
 
 
 (defun run_sif_list (sif_list)
@@ -213,7 +272,7 @@ plot \\
     )
   )
 
-;(run-them)
+(run-them)
 
 
 
