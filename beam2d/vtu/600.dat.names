@@ -3,7 +3,7 @@ Elmer version: 9.0
 Elmer revision: Release
 Elmer compilation date: 2024-08-16
 Solver input file: c:/users/filip/appdata/roaming/fem/elmer_fem/beam2d//600.sif
-File started at: 2024/10/15 01:56:52
+File started at: 2024/10/15 02:02:48
 Number of data nodes for each step
   bc nodes: 201
   polyline nodes: 396
