@@ -1,4 +1,4 @@
-
+(ql:quickload "clingon")
 
 
 (defparameter fname
