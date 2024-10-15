@@ -23,7 +23,7 @@
 (defparameter  *Mesh_DB* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/beam2d")
 (defparameter *Results_Directory* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/vtu/")
 
-(load "sifclasses.lisp")
+(load #?"${*ROOT*}/lisp/sifclasses.lisp")
 
 
 (defun header_string (mesh_db results_directory)

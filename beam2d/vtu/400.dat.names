@@ -2,11 +2,11 @@ Metadata for SaveLine file: c:/users/filip/appdata/roaming/fem/elmer_fem/beam2d/
 Elmer version: 9.0
 Elmer revision: Release
 Elmer compilation date: 2024-08-16
-Solver input file: c:/users/filip/appdata/roaming/fem/elmer_fem/beam2d//400.sif
-File started at: 2024/10/15 02:59:09
+Solver input file: c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d//400.sif
+File started at: 2024/10/15 22:13:49
 Number of data nodes for each step
-  bc nodes: 101
-  polyline nodes: 72
+  bc nodes: 135
+  polyline nodes: 233
   circle nodes: 0
   isocurve nodes: 0
 Data on different columns

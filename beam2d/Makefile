@@ -20,9 +20,12 @@ plot:	lisp
 	wsl qiv image.png
 
 clean:
-	rm -f sif/* 2> /dev/null
-	rm -f vtu/* 2> /dev/null
+
+	rm -rf sif 2> /dev/null
+	rm -rf vtu 2> /dev/null
 	rm -f *~ 2> /dev/null
+	mkdir sif
+	mkdir vtu
 
 blisp: 
 	sbcl --load lisp/run.lisp
