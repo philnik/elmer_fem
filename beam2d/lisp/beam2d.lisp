@@ -1,5 +1,7 @@
 (ql:quickload "alexandria")
 (ql:quickload "cl-ppcre")
+(ql:quickload "uiop")
+
 (ql:quickload :cl-interpol)
 (ql:quickload :html-template)
 (use-package :cl-interpol)
@@ -9,9 +11,7 @@
 (defparameter *string-modifier* #'identity)
 
 ;;; defparameter
-
 (defparameter *ROOT* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/")
-
 (defparameter *INPUT_SIF_FILE* #?"${*ROOT*}/beam2d.sif.tmpl")
 (defparameter *OUTPUT-SIF-FILE* #?"${*ROOT*}/beam2d.sif")
 (defparameter *GNUPLOT_FILE* #?"${*ROOT*}/plot_file.plt")
@@ -35,7 +35,6 @@ Header
   Results Directory \"${results_directory}\"
 End
 ")
-
 
 (defun simulation_string (solver_input post_file)
   #?"
@@ -61,14 +60,26 @@ End
     (mapcar #'(lambda (i) (format stream "~{~a ~}~%" i)) l)
   stream))
 
+(defun split-points (min max split)
+  "
+(split-points 0 4000.0 5)=> (0 800.0 1600.0 2400.0 3200.0 4000.0)
+"
+  (let ((step (/ (- max min) split))
+	(l '()))
 
-(defun boundary_string (middle_points)
-  (let* ((points (print_2d_coordinates middle_points))
-	 (no (+ 2 (length middle_points))))
+    (dotimes (i split)
+      (push (* (- split i)  step)
+	    l))
+    (push min l)
+
+    l))
+
+(defun boundary_string% (m_points)
+  (let* ((points (print_2d_coordinates m_points))
+	 (no (+ 0 (length m_points))))
   #?"
 Boundary Condition 3
-  Target Coordinates(${no},2) = 0 0
-${points}4000 0 
+  Target Coordinates(${no},2) = ${points}
   Name = \"r1\"
 
   Displacement 3 = 0
@@ -77,8 +88,11 @@ ${points}4000 0
 End"
   ))
 
-(boundary_string  (list '(1 2) '(3 4)))
-(length  (list '(1 2) '(3 4)))
+(defun boundary_string (min max split)
+  (let* ((bp (split-points min max split))
+	 (ssp (loop for i in bp collect (list i 0)))
+	 )
+	 (boundary_string% ssp)))
 
 
 (defun make_sif_header()
@@ -113,6 +127,7 @@ End"
 	collect (+ (* i 200  ) 0  )
 	))
 
+(defun myr2 () (loop for i from 4  to 10 collect i))
 
 
 (setq sif_test (make-instance 'sif-family))
@@ -146,7 +161,7 @@ plot \\
 	     ))
   )))
 
-  
+
 (defun replace_string (from to mystr)
   (cl-ppcre:regex-replace-all from
 			      mystr
@@ -169,12 +184,13 @@ plot \\
 (defun write_sif_case (sif_case)
   (let ((id (i2str (id sif_case))))
     (let* ((sif_file #?"${*ROOT*}/${id}.sif")
-	  (vtu_file #?"${*ROOT*}/vtu/${id}.vtu")
-	  (export_data #?"${*ROOT*}/vtu/${id}.dat")
-	  (mount_pos1 (concatenate 'string " " id))
-	  (string-sif (alexandria:read-file-into-string *INPUT_SIF_FILE*))
-	  (text_sif_header (text (make_sif_header)))
-	  (text_sif_simulation (text (make_sif_simulation sif_file vtu_file)))
+           (vtu_file #?"${*ROOT*}/vtu/${id}.vtu")
+	       (export_data #?"${*ROOT*}/vtu/${id}.dat")
+	       (mount_pos1 (concatenate 'string " " id))
+	       (string-sif (alexandria:read-file-into-string *INPUT_SIF_FILE*))
+	       (text_sif_header (text (make_sif_header)))
+	       (text_sif_simulation (text (make_sif_simulation sif_file vtu_file)))
+           (text_sif_boundary (boundary_string 0 4000.0 (id sif_case)))
 	  )
       
       (with-input-from-string (istream string-sif)
@@ -189,12 +205,12 @@ plot \\
 					    :vtu_file ,vtu_file
 					    :text_sif_header ,text_sif_header
 					    :text_sif_simulation ,text_sif_simulation
+                        :text_sif_boundary ,text_sif_boundary
 					    )
 					  :stream ,ostream
 					  ))))))
   (format t "writing case:~a~%" (sif-fname sif_case))
   )
-
 
 ;;;!Real MATC <!-- TMPL_VAR force -->
 
@@ -221,7 +237,7 @@ plot \\
 
 (defun run-them ()
   (progn
-    (setq sif_list (mapcar #'(lambda (i) (add_sif i)) (myrange)))
+    (setq sif_list (mapcar #'(lambda (i) (add_sif i)) (myr2)))
     (print_sif_fnames sif_list)
     (setq sif_test (make-instance 'sif-family))
     (setf (sif-list sif_test) sif_list)
@@ -233,4 +249,4 @@ plot \\
     )
   )
 
-(run-them)
+;(run-them)
