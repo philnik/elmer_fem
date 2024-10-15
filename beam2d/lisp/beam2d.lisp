@@ -23,6 +23,9 @@
 (defparameter  *Mesh_DB* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/beam2d")
 (defparameter *Results_Directory* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/vtu/")
 
+(load "sifclasses.lisp")
+
+
 (defun header_string (mesh_db results_directory)
 #?"
 Header
@@ -32,10 +35,6 @@ Header
   Results Directory \"${results_directory}\"
 End
 ")
-
-(format t 
-(header_string *Mesh_DB* *Results_Directory*)
-)
 
 
 (defun simulation_string (solver_input post_file)
@@ -52,50 +51,35 @@ Simulation
 End
 ")
 
-;;; class
-
-(defclass %sif_header ()
-  ((mesh_db :accessor  mesh_db
-       :reader mesh_db
-       :initarg :mesh_db
-       :initform ""
-       :type string
-       :documentation "mesh db")
-   (results_directory :accessor  results_directory
-       :reader results_directory
-       :initarg :results_directory
-       :initform ""
-       :type string
-       :documentation "results directory")
-   (text :accessor  text
-       :reader text
-       :initarg :text
-       :initform ""
-       :type string
-       :documentation "text")
-   ))
+(defun print_2d_coordinates (l)
+  "
+(list '(1 2) '(3 4))) ->
+1 2
+3 4 
+"
+  (with-output-to-string (stream)
+    (mapcar #'(lambda (i) (format stream "~{~a ~}~%" i)) l)
+  stream))
 
 
-(defclass %sif_simulation ()
-  ((solver_input :accessor  solver_input
-		 :reader solver_input
-		 :initarg :solver_input
-		 :initform ""
-		 :type string
-		 :documentation "solver_input")
-   (post_file :accessor  post_file
-       :reader post_file
-       :initarg :post_file
-       :initform ""
-       :type string
-		      :documentation "post_file")
-   (text :accessor  text
-       :reader text
-       :initarg :text
-       :initform ""
-       :type string
-       :documentation "text")
-   ))
+(defun boundary_string (middle_points)
+  (let* ((points (print_2d_coordinates middle_points))
+	 (no (+ 2 (length middle_points))))
+  #?"
+Boundary Condition 3
+  Target Coordinates(${no},2) = 0 0
+${points}4000 0 
+  Name = \"r1\"
+
+  Displacement 3 = 0
+  Displacement 2 = 0 
+  Displacement 1 = 0
+End"
+  ))
+
+(boundary_string  (list '(1 2) '(3 4)))
+(length  (list '(1 2) '(3 4)))
+
 
 (defun make_sif_header()
   (let (( sif_header (make-instance '%sif_header
@@ -118,85 +102,14 @@ End
       sif_simulation
     )))
 
-;(text (make_sif_simulation 1 2))
-
-
-(defclass sif ()
-  (
-  (header :accessor  header
-       :reader header
-       :initarg :header
-       :initform ""
-       :type string
-       :documentation "header")
-   
-   (y0 :accessor  y0
-       :reader sif-y0
-       :initarg :y0
-       :initform 1000
-       :type real
-       :documentation "y0")
-  (id :accessor  id
-       :reader id
-       :initarg :id
-       :initform 0
-       :type integer
-       :documentation "identification number")
-   
-  (sif-fname :accessor  sif-fname
-	    :reader sif-fname
-	    :initarg :sif-fname
-	    :initform "beam2d.sif"
-	    :type string
-	     :documentation "sif file name")
-
-   (boundary_targets :accessor  boundary_targets
-		     :reader boundary_targets
-		     :initarg :boundary_targets
-		     :initform "targets"
-		     :type string
-		     :documentation "boundary_targets")
-
-   
-   (fname :accessor  fname
-	  :reader fname
-          :initarg :fname
-	  :initform "1000.dat"
-          :type string 
-	  :documentation "fname")
-   ))
-
-
-
-(defclass sif-family ()
-  (
-   (sif-list :accessor  sif-list
-	 :reader sif-list
-	 :initarg :sif-list
-	 :initform '()
-	 :type list
-       :documentation "case_sif")
-   (gnuplot_file :accessor  gnuplot_file
-		 :reader gnuplot_file
-		 :initarg :fname
-		 :initform "1000.plt"
-		 :type string 
-		 :documentation "gnuplot file")
-   (png_file :accessor  png_file
-	      :reader png_file
-              :initarg :fname
-	      :initform "image.png"
-              :type string 
-	      :documentation "image file to export diagrams")
-   
-   ))
+(text (make_sif_simulation 1 2))
 
 (defun i2str (i)
   (format nil "~a" i)
   )
 
 (defun myrange ()
-  (loop for i from 1 to 9
+  (loop for i from 1 to 19
 	collect (+ (* i 200  ) 0  )
 	))
 
@@ -255,12 +168,13 @@ plot \\
 
 (defun write_sif_case (sif_case)
   (let ((id (i2str (id sif_case))))
-    (let ((sif_file #?"${*ROOT*}/${id}.sif")
+    (let* ((sif_file #?"${*ROOT*}/${id}.sif")
 	  (vtu_file #?"${*ROOT*}/vtu/${id}.vtu")
 	  (export_data #?"${*ROOT*}/vtu/${id}.dat")
 	  (mount_pos1 (concatenate 'string " " id))
 	  (string-sif (alexandria:read-file-into-string *INPUT_SIF_FILE*))
 	  (text_sif_header (text (make_sif_header)))
+	  (text_sif_simulation (text (make_sif_simulation sif_file vtu_file)))
 	  )
       
       (with-input-from-string (istream string-sif)
@@ -274,6 +188,7 @@ plot \\
 					    :sif_file ,sif_file
 					    :vtu_file ,vtu_file
 					    :text_sif_header ,text_sif_header
+					    :text_sif_simulation ,text_sif_simulation
 					    )
 					  :stream ,ostream
 					  ))))))
@@ -282,9 +197,6 @@ plot \\
 
 
 ;;;!Real MATC <!-- TMPL_VAR force -->
-
-
-
 
 (defun run_sif_list (sif_list)
   (loop for sif_case in sif_list
@@ -321,20 +233,4 @@ plot \\
     )
   )
 
-;(run-them)
-
-
-
-;; (setq sif_list (mapcar #'(lambda (i) (add_sif i)) (myrange)))
-;; (print_sif_fnames sif_list)
-;; (setq sif_test (make-instance 'sif-family))
-;; (setf (sif-list sif_test) sif_list)
-;; (setf (gnuplot_file sif_test) "plot_file.plt")
-;; (sif-list sif_test)
-;; (gnuplot_file sif_test)
-
-
-
-
-
-  
+(run-them)
