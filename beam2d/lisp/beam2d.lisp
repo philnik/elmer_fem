@@ -37,6 +37,21 @@ End
 (header_string *Mesh_DB* *Results_Directory*)
 )
 
+
+(defun simulation_string (solver_input post_file)
+  #?"
+Simulation
+  Max Output Level = 5
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady state
+  Steady State Max Iterations = 1
+  Output Intervals(1) = 1
+  Solver Input File =  \"${solver_input}\"
+  Post File = \"${post_file}\"
+End
+")
+
 ;;; class
 
 (defclass %sif_header ()
@@ -51,15 +66,36 @@ End
        :initarg :results_directory
        :initform ""
        :type string
-		      :documentation "results directory")
+       :documentation "results directory")
    (text :accessor  text
        :reader text
        :initarg :text
        :initform ""
        :type string
-		      :documentation "text")
+       :documentation "text")
    ))
 
+
+(defclass %sif_simulation ()
+  ((solver_input :accessor  solver_input
+		 :reader solver_input
+		 :initarg :solver_input
+		 :initform ""
+		 :type string
+		 :documentation "solver_input")
+   (post_file :accessor  post_file
+       :reader post_file
+       :initarg :post_file
+       :initform ""
+       :type string
+		      :documentation "post_file")
+   (text :accessor  text
+       :reader text
+       :initarg :text
+       :initform ""
+       :type string
+       :documentation "text")
+   ))
 
 (defun make_sif_header()
   (let (( sif_header (make-instance '%sif_header
@@ -71,6 +107,19 @@ End
       (text sif_header)
       sif_header
     )))
+
+(defun make_sif_simulation(solver_input post_file)
+  (let (( sif_simulation (make-instance '%sif_simulation
+				:solver_input solver_input
+				:post_file post_file
+				    )))
+    (progn
+      (setf (text sif_simulation) (simulation_string solver_input post_file))
+      sif_simulation
+    )))
+
+;(text (make_sif_simulation 1 2))
+
 
 (defclass sif ()
   (
