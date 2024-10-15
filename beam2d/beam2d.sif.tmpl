@@ -52,10 +52,23 @@ File Append = Logical False
 Polyline Coordinates(2,2) = Real 0.0 0.0 5000.0 0.0
 End
 
+Solver 3
+ Exec Solver = after timestep
+ Equation = String SaveScalars
+ Procedure = File "SaveData" "SaveScalars"
+ Filename = File "displa.dat"
+ File Append = Logical True
+ Variable 1 = String Displacement
+ Operator 1 = String max
+ Variable 2 = String Displacement
+ Operator 2 = String min
+ Variable 3 = String Displacement
+ Operator 3 = String mean
+End
 
 Equation 1
   Name = "Equation 1"
-  Active Solvers(2) = 1 2
+  Active Solvers(3) = 1 2 3
 End
 
 Material 1
@@ -78,10 +91,5 @@ Boundary Condition 2
  Real Procedure "force" "myforce"
   
 End
-
-!MyParameter = Variable Time
-!Real Procedure "MyLibrary" "MyFunction"
-
-
 
 <!-- TMPL_VAR text_sif_boundary -->=
