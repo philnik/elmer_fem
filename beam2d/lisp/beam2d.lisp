@@ -12,17 +12,8 @@
 
 ;;; defparameter
 (defparameter *ROOT* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/")
-(defparameter *INPUT_SIF_FILE* #?"${*ROOT*}/beam2d.sif.tmpl")
-(defparameter *OUTPUT-SIF-FILE* #?"${*ROOT*}/beam2d.sif")
-(defparameter *GNUPLOT_FILE* #?"${*ROOT*}/plot_file.plt")
 
-(defparameter *STRING_SIF* "")
-(defparameter *STRING_SIF* (alexandria:read-file-into-string *INPUT_SIF_FILE*))
-(defparameter *default-template-output* nil)
-
-(defparameter  *Mesh_DB* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/beam2d")
-(defparameter *Results_Directory* "c:/Users/filip/AppData/Roaming/fem/elmer_fem/beam2d/vtu/")
-
+(load #?"${*ROOT*}/lisp/sifparameters.lisp")
 (load #?"${*ROOT*}/lisp/sifclasses.lisp")
 
 
@@ -92,7 +83,37 @@ End"
   (let* ((bp (split-points min max split))
 	 (ssp (loop for i in bp collect (list i 0)))
 	 )
-	 (boundary_string% ssp)))
+	(boundary_string% ssp)))
+
+
+(defun random_split (min max split)
+  (let ((dev 4000))
+  (list min
+        (+ 0000 (random dev))
+        (+ 0000 (random dev))
+        (+ 0000 (random dev))
+        max)))
+           
+        
+
+(defun boundary_string2 (min max split)
+  (let* ((bp (random_split min max 4 ))
+	     (ssp (loop for i in bp collect (list i 0))))
+    (push (list (/ max split 0.5) 0.0) ssp)
+	(boundary_string% ssp)))
+
+
+(defun boundary_string3 (min max split)
+  (let* ((bp (split-points min max 4 ))
+	     (ssp (loop for i in bp collect (list i 0))))
+    (push (list (/ max split 0.5) 0.0) ssp)
+	(boundary_string% ssp)))
+
+
+
+
+
+;(test_boundary_string2 0 4000.0 20 )
 
 
 (defun make_sif_header()
@@ -127,7 +148,7 @@ End"
 	collect (+ (* i 200  ) 0  )
 	))
 
-(defun myr2 () (loop for i from 4  to 10 collect i))
+(defun myr2 () (loop for i from 1   to 3000 collect i))
 
 
 (setq sif_test (make-instance 'sif-family))
@@ -190,7 +211,7 @@ plot \\
 	       (string-sif (alexandria:read-file-into-string *INPUT_SIF_FILE*))
 	       (text_sif_header (text (make_sif_header)))
 	       (text_sif_simulation (text (make_sif_simulation sif_file vtu_file)))
-           (text_sif_boundary (boundary_string 0 4000.0 (id sif_case)))
+           (text_sif_boundary (boundary_string2 0 4000.0 (id sif_case)))
 	  )
       
       (with-input-from-string (istream string-sif)
