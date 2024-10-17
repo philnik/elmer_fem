@@ -1,8 +1,9 @@
 Metadata for SaveLine file: .//plotline.dat
 Elmer version: 9.0
-Elmer compilation date: 2024-01-22
+Elmer revision: Release
+Elmer compilation date: 2024-08-16
 Solver input file: case_bending.sif
-File started at: 2024/10/17 16:14:19
+File started at: 2024/10/17 22:38:15
 Number of data nodes for each step
   bc nodes: 10
   polyline nodes: 101

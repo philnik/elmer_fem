@@ -13,7 +13,7 @@ Simulation
   Steady State Max Iterations = 1
   Output Intervals(1) = 1
   Solver Input File = case.sif
-  Post File = case.vtu
+  Post File = case_6_.vtu
 End
 
 Constants
@@ -35,6 +35,12 @@ End
 Solver 1
   Equation = Linear elasticity
   Procedure = "StressSolve" "StressSolver"
+  Calculate Stresses = True
+  Calculate Strains = True
+  Calculate Principal = True
+  
+  
+  ! Eigen Analysis = True
   Exec Solver = Always
   Stabilize = True
   Optimize Bandwidth = True
@@ -80,22 +86,41 @@ Material 2
   Heat Capacity = 460.0
 End
 
+! Boundary Condition 1
+!   Target Boundaries(2) = 2 16 
+!   Name = "steady"
+!   Displacement 1 = 0
+!   Displacement 2 = 0
+!   Displacement 3 = 0
+! End
+
+
 Boundary Condition 1
-  Target Boundaries(2) = 2 16 
-  Name = "steady"
+  Name = "weight"
+  Target Coordinates(3,2) = 500.0 10.0
+  	 		    000   10.0
+  	 		    999.0 10.0
   Displacement 1 = 0
   Displacement 2 = 0
   Displacement 3 = 0
+
+
+
 End
+
+
+
 
 Boundary Condition 2
   Target Boundaries(1) = 12 
   Name = "force1"
-  Force 1 = 1
+  Force 1 = 10
+  Force 2 = -10
 End
 
 Boundary Condition 3
   Target Boundaries(1) = 6 
   Name = "force2"
-  Force 1 = -1
+  Force 1 = -10
+  Force 2 = 10
 End
