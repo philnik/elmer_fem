@@ -1,6 +1,7 @@
 
 
-
+fetch:
+	wsl -e scripts/git_pull_remote.sh
 
 clean:
 	rm -rf */*~ ||:
