@@ -60,6 +60,7 @@ End
 Equation 1 :: Active Solvers(1) = 1
 
 Boundary Condition 1
+  Name = "Down fixed"
   Target Boundaries(4) = 1 2 3 4
   U 1 = 0
   U 2 = 0
@@ -70,6 +71,7 @@ Boundary Condition 1
 End
 
 Boundary Condition 2
+  Name = "Top fixed"
   Target Boundaries(4) = 5 8 10 12
   U 1 = 0
   U 2 = 0
@@ -80,6 +82,7 @@ Boundary Condition 2
 End
 
 Boundary Condition 3
+  Name = "Vertical Reinforcement"
   Target Boundaries(4) = 6 7 9 11
   U 1 = 0
   U 2 = 0
