@@ -45,8 +45,6 @@ Boundary Condition 3
 End
 """
 
-
-
 new_sif = sif_template.substitute(HEADER=header.text,
                                   SIMULATION=sf.simulation.text,
                                   SOLVER1 = sf.solver_elasticity.text,
