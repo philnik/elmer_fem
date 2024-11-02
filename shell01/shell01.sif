@@ -34,7 +34,8 @@ End
 
 Body Force 1
   Name = "Gravity Force on Shell"
-  Normal Pressure = 1
+  !Normal Pressure = 1
+  Normal Pressure = Variable Coordinate 3; Real MATC "-tx+2.0"
 End
 
 
@@ -76,9 +77,14 @@ Boundary Condition 2
   DNU 1 = 0
   DNU 2 = 0
   DNU 3 = 0
-
 End
 
+Boundary Condition 3
+  Target Boundaries(4) = 6 7 9 11
+  U 1 = 0
+  U 2 = 0
+  U 3 = 0
+End
 
 
 
