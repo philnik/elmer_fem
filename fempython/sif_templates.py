@@ -3,8 +3,8 @@ from string import Template
 
 ROOT = "c:/Users/filip/AppData/Roaming/fem/elmer_fem/fan_pull/"
 
-sif_fname = ROOT+"pcase.sif"
-sif_output = ROOT+"ocase.sif"
+sif_input_fname = ROOT+"pcase.sif"
+sif_output_fname = ROOT+"ocase.sif"
 
 def read_sif(ifname):
     with open(ifname, 'r') as file:
@@ -15,10 +15,7 @@ def write_sif(ofname,text):
     with open(ofname, 'w') as file:
         file.write(text)
 
-sif_content = read_sif(sif_fname)
-
-sif_template = Template(sif_content)
-
+    
 class section():
     def __init__(self):
         self.text = ""
@@ -107,10 +104,20 @@ Boundary Condition 4
 End
 """
 
-new_sif = sif_template.substitute(HEADER=header.text,
-                                  SIMULATION=simulation.text,
-                                  SOLVER1 = solver_elasticity.text,
-                                  BOUNDARY_PINNED = boundary_pinned.text)
-write_sif(sif_output, new_sif)
+
+def read_sif_template(sif_fname):
+    sif_content = read_sif(sif_fname)
+    sif_template = Template(sif_content)
+    return sif_template
+
+
+def sif_example():
+    sif_template = read_sif_template(sif_input_fname)
+    new_sif = sif_template.substitute(HEADER=header.text,
+                                      SIMULATION=simulation.text,
+                                      SOLVER1 = solver_elasticity.text,
+                                      BOUNDARY_PINNED = boundary_pinned.text)
+    write_sif(sif_output_fname, new_sif)
+    return new_sif
 
 

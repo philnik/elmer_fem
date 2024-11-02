@@ -29,13 +29,14 @@ def escape_string(test_str):
 def read_geo_file(input_fname):
     with open(input_fname, 'r') as file:
         file_content = file.read()
+    return file_content
 
 
 def find_all_numbers(file_content,escape=True):
     """
     get all numbers from geo file
     """
-    nlist = re.findall("[\+-][0-9]+\.[0-9]+E\+[0-9]+",file_content)
+    nlist = re.findall("[\\+-][0-9]+\\.[0-9]+E\\+[0-9]+",file_content)
     ut = sorted(list(set(nlist)))
     res = []
     for i, v in enumerate(ut):
@@ -84,12 +85,44 @@ ov = [['param3', 500],# fan height
 
 #ov = []
 
-def export_sif_file(input_fname,output_fname,ov=[]):
-    file_content = read_parametric_geo(input_fname)
+
+def export_geo0(input_fname,output_fname,ov=[]):
+    """
+    reads input_fname .geo file
+    converts all numbers to parameters
+    change values of the paramaeters according to ov array
+    exports the new geo file
+    """
+    file_content = read_geo_file(input_fname)
     x = subst_them(file_content)
-    y=define_parameters(file_content,ov)
+    y = define_parameters(file_content,ov)
     with open(output_fname, 'w') as file:
         file.write(y+'\n'+x)
+    return y+x
+
+
+
+class pg():
+    def __init__(self):
+        pass
+
+class pgeo():
+    def __init__(self,ifile,ofile,ov=[]):
+        self.ifile = ifile
+        self.ofile = ofile
+        self.ov = ov
+        
+    def export_geo(self):
+        print("input_file:"+self.ifile)
+        print("output_file:"+self.ofile)
+        export_geo0(self.ifile, self.ofile,self.ov)
 
 
 # print(x)
+def angle_home():
+    ROOT = "c:/Users/filip/AppData/Roaming/fem/elmer_fem/angle_home/"
+    #ifile = ROOT + "raw_angle_home.geo"
+    ofile = ROOT + "angle_home.geo"
+    export_geo(ifile,ofile)
+
+
