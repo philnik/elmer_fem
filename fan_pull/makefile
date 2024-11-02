@@ -4,6 +4,7 @@ gmsh = "C:/Program Files/FreeCAD 0.21/bin/gmsh.exe"
 
 parametric:
 	python parametric_geo.py
+	python sif_templates.py
 
 grid:
 	$(gmsh) fan_pull_out.geo -2
@@ -13,7 +14,8 @@ all: parametric grid
 	echo "ok!"
 
 solver: all
-	ElmerSolver case.sif
+	ElmerSolver ocase.sif
+	python test_pyvista.py
 
 gmsh:
 	$(gmsh) fan_pull_out.msh

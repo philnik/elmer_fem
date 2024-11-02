@@ -86,7 +86,7 @@ Boundary Condition 2
   Target Boundaries(1) = 2
   Name = "force_fan"
   Target Coordinates(1,2) = 200.0 300.0
-  Force 2 = -10
+  Force 2 = -70
   Force 1 = 50
 End
 
@@ -95,17 +95,15 @@ Boundary Condition 3
   Target Boundaries(1) = 10
   Name = "force_motor"
   Target Coordinates(1,2) = 470.0 60.0
-  Force 2 = 10
+  Force 2 = 30
   Force 1 = -50
 End
 
 
 Boundary Condition 4
 	 Name = "catch"
-	 Target Coordinates(5,2) = -100.0 0.0
-	 			   100.0 0.0
-				   300.0 0.0
-				   450.0 0.0
+	 Target Coordinates(3,2) = -100.0 0.0
+	 			   200.0 0.0
 				   600.0 0.0
 	 Displacement 1 = 0
 	 Displacement 2 = 0
