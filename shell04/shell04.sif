@@ -15,7 +15,7 @@ Simulation
   Steady State Max Iterations = 1
   Steady State Min Iterations = 1
   Output Intervals = 1
-  Post File = "shell04_1000.vtu"
+  Post File = "shell04_1000_novert.vtu"
 End
 
 Body 1
@@ -27,7 +27,7 @@ End
 
 Material 1
   Density = 1000.0
-  Youngs Modulus = 1.5e9
+  Youngs Modulus = 1.1e9
   Poisson Ratio = 0.3
   Shell Thickness = 0.012
 End
@@ -65,18 +65,18 @@ Boundary Condition 1
   U 1 = 0
   U 2 = 0
   U 3 = 0
-  DNU 1 = 0
-  DNU 2 = 0
+!  DNU 1 = 0
+!  DNU 2 = 0
   DNU 3 = 0
 End
 
-Boundary Condition 2
-  Name = "vertical-fixed"
-  Target Boundaries(8) = 10 11 13 15 17 18 21 23
-  U 1 = 0
-  U 2 = 0
-  U 3 = 0
-End
+! Boundary Condition 2
+!   Name = "vertical-fixed"
+!   Target Boundaries(8) = 10 11 13 15 17 18 21 23
+!   U 1 = 0
+!   U 2 = 0
+!   U 3 = 0
+! End
 
 
 
