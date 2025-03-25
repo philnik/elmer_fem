@@ -1,10 +1,18 @@
 import numpy as np
 
+"""
+mesh header:
+number_of_nodes  number_of_elements  number_of_boundary_elements
+number_of_materials(bodies)
+202 number_of_boundary_elements
+303 number_of_elements
+"""
+
 
 def read_mesh_boundary_file(fname):
     """"
-    0 element_id
-    1 boundary id as used in sif files
+    0 boundary_element_id
+    1 boundary_id as used in sif files
     2 mesh element 1 
     3 mesh element 2 (0 if is not shared by 2 elements
     4 202 for 2d (defined by 2 points and it can belong up to 2 triangle elements)
@@ -57,7 +65,8 @@ def read_mesh_elements(fname):
     # Extract columns
     d["element_id"] = mesh_boundary[:, 0].astype(int)
     d["material_id"] = mesh_boundary[:, 1].astype(int)
-    d["nodes"] = mesh_boundary[:, 2:].astype(int)        # Boundary condition IDs
+    d["element_type"] = mesh_boundary[:,2].astype(int)
+    d["nodes"] = mesh_boundary[:, 3:].astype(int)     
     return d
 
 fname_boundary = "c:/Users/filip/AppData/Roaming/fem/elmer_fem/porous/porous_square/mesh.boundary"
