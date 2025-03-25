@@ -1,10 +1,19 @@
 import numpy as np
 
 
-fname = "c:/Users/filip/AppData/Roaming/fem/elmer_fem/porous/porous_square/mesh.boundary"
-# Load the mesh.boundary file
-
 def read_mesh_boundary_file(fname):
+    """"
+    0 element_id
+    1 boundary id as used in sif files
+    2 mesh element 1 
+    3 mesh element 2 (0 if is not shared by 2 elements
+    4 202 for 2d (defined by 2 points and it can belong up to 2 triangle elements)
+    5 mesh node 1
+    6 mesh node 2
+    
+    elements in 2d are triangles defined by 3 edges
+    order of 2-3 and 5-6 have some meaning
+    """
     d = {}
     mesh_boundary = np.loadtxt(fname, dtype=int)
     # Extract columns
@@ -14,19 +23,16 @@ def read_mesh_boundary_file(fname):
     d["node_indice"] = mesh_boundary[:, 3:] # Nodes forming the boundary elements
     return d
 
-
-def print_boundary(dboundary):
-    # Print the extracted data
-    print("Element ID:", dboundary["element_id"])
-    print("Boundary ID:", dboundary["boundary_id"])
-    print("Boundary Condition IDs:", dboundary["bc_id"])
-    print("Node Indices:\n", dboundary["node_indice"])
-
-print_boundary(dboundary)
-
-
-
 def read_mesh_nodes(fname):
+    """
+    0 node id
+    1 -1
+    2 x coords
+    3 y coords
+    4 z coords / 0 for 2d
+
+
+    """
     d = {}
     mesh_boundary = np.loadtxt(fname, dtype=None)
     # Extract columns
@@ -36,6 +42,16 @@ def read_mesh_nodes(fname):
 
 
 def read_mesh_elements(fname):
+    """
+    0 element id
+    1 material id / body id
+    2 303 for 2d (triangle)
+    3 node 1
+    4 node 2
+    5 node 3
+
+    order of 3-4-5 has some meaning
+    """
     d = {}
     mesh_boundary = np.loadtxt(fname, dtype=None)
     # Extract columns
@@ -55,9 +71,6 @@ dc = dnodes["coords"]
 did = dnodes["element_id"]
 
 delements = read_mesh_elements(fname_elements)
-
-# for i,v in delements.items():
-#     print(i,v)
 
 def print_dict(d):
     for i,v in d.items():
