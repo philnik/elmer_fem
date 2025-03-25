@@ -81,6 +81,54 @@ did = dnodes["element_id"]
 
 delements = read_mesh_elements(fname_elements)
 
+
+def check_if_elements_repeat_edges():
+    """
+    each element has  3 nodes,
+    if the edge is shared by 2 elements, or it is an outside boundary
+    it will be repeated
+    each node since it belongs to 3 elements the most, it will be repeated 6 times
+    or it will belong to 3 edges.
+
+    """
+    den = delements['nodes']
+    val = 
+    mask = (den[:,0]==val) | (den[:,1]==val) | (den[:,2]==val)
+    fr = den[mask]
+    for row in fr:
+        print(f"{row[0]}-{row[1]}-{row[2]}")
+
+check_if_elements_repeat_edges()
 def print_dict(d):
     for i,v in d.items():
         print(i,v)
+
+
+
+import numpy as np
+
+def check_points_on_lines(lines, points):
+    """
+    Checks if each point in 'points' belongs to any of the given 'lines'.
+    
+    Parameters:
+    - lines: NumPy array of shape (N, 3) where each row is (A, B, C) representing Ax + By + C = 0
+    - points: NumPy array of shape (M, 2) where each row is (x, y)
+
+    Returns:
+    - A boolean array of shape (M, N) where True means the point lies on the corresponding line.
+    """
+    A, B, C = lines[:, 0], lines[:, 1], lines[:, 2]  # Extract A, B, C from lines
+    x, y = points[:, 0], points[:, 1]  # Extract x, y from points
+
+    # Compute Ax + By + C for each point-line combination
+    result = A[:, None] * x + B[:, None] * y + C[:, None]  # Shape (N, M)
+    
+    return result.T == 0  # Transpose to match (M, N)
+
+# # Example usage:
+# lines = np.array([[2, -3, 6], [1, -1, -2]])  # Two lines: 2x - 3y + 6 = 0 and x - y - 2 = 0
+# points = np.array([[3, 0], [1, 3], [4, 6]])  # Three points
+
+# result = check_points_on_lines(lines, points)
+# print(result)  # Boolean matrix (M points × N lines)
