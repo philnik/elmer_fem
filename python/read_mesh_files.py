@@ -92,7 +92,7 @@ def check_if_elements_repeat_edges():
 
     """
     den = delements['nodes']
-    val = 
+    val = 80
     mask = (den[:,0]==val) | (den[:,1]==val) | (den[:,2]==val)
     fr = den[mask]
     for row in fr:
@@ -103,9 +103,6 @@ def print_dict(d):
     for i,v in d.items():
         print(i,v)
 
-
-
-import numpy as np
 
 def check_points_on_lines(lines, points):
     """
@@ -126,9 +123,49 @@ def check_points_on_lines(lines, points):
     
     return result.T == 0  # Transpose to match (M, N)
 
-# # Example usage:
-# lines = np.array([[2, -3, 6], [1, -1, -2]])  # Two lines: 2x - 3y + 6 = 0 and x - y - 2 = 0
-# points = np.array([[3, 0], [1, 3], [4, 6]])  # Three points
 
-# result = check_points_on_lines(lines, points)
-# print(result)  # Boolean matrix (M points × N lines)
+def check_it():
+    # Example usage:
+    lines = np.array([[2, -3, 6], [1, -1, -2]])  # Two lines: 2x - 3y + 6 = 0 and x - y - 2 = 0
+    points = np.array([[3, 0], [1, 3], [4, 6]])  # Three points
+
+    result = check_points_on_lines(lines, points)
+    print(result)  # Boolean matrix (M points × N lines)
+
+
+def check_points_on_lines_by_points2(lines, points, tol=1e-9):
+    """
+    Checks if each point belongs to any of the given lines defined by two points.
+
+    Parameters:
+    - lines: NumPy array of shape (N, 4), where each row is (x1, y1, x2, y2) defining a line.
+    - points: NumPy array of shape (M, 2), where each row is (x, y).
+    - tol: Tolerance for floating-point precision issues.
+
+    Returns:
+    - A boolean array of shape (M, N), where True means the point lies on the corresponding line.
+    """
+
+    x1, y1, x2, y2 = lines[:, 0], lines[:, 1], lines[:, 2], lines[:, 3]
+    x, y = points[:, 0], points[:, 1]
+
+
+    # Reshape to enable broadcasting
+    x1, y1, x2, y2 = x1[:, np.newaxis], y1[:, np.newaxis], x2[:, np.newaxis], y2[:, np.newaxis]
+    x, y = x[np.newaxis, :], y[np.newaxis, :]
+
+    # Compute determinant (collinearity condition)
+    det = (x2 - x1) * (y - y1) - (y2 - y1) * (x - x1)
+
+    return np.abs(det) < tol  # Check if determinant is close to zero
+
+
+# Example usage:
+def check2():
+    lines = np.array([[0, 0, 1, 0], [0, 0, 4, 4]])  # Two lines: (1,2)-(3,4) and (0,0)-(4,4)
+    points = np.array([[20, 0], [8, 8], [3, 3]])  # Three points
+
+    result = check_points_on_lines_by_points2(lines, points)
+    print(result)  # Boolean matrix (M points × N lines)
+
+check2()
