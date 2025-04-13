@@ -1,0 +1,38 @@
+
+
+* namespace
+
+    -namespace does not work
+
+* try newp
+
+    ok!
+
+* export from gmsh to elmer
+
+    ElmerGUI can read now .msh files
+
+    - random export based on lc or other conditions,
+    - ElmerGUI segmentation fault on Physical volumes
+
+* describe the boundary faces
+
+** Volumes
+    | Body Property | description   | material |
+    |---------------+---------------+----------|
+    |             1 | inlet         | Air      |
+    |             2 | porous medium | carbon   |
+    |             3 | outlet        | Air      |
+
+** Surfaces
+
+    | boundary | description | body | condition | comments     |
+    |----------+-------------+------+-----------+--------------|
+    |        1 | air inlet   |    1 | inlet     | Z+ direction |
+    |        2 |             |    2 | wall      |              |
+    |          |             |      |           |              |
+    |          |             |      |           |              |
+    |          |             |      |           |              |
+    |          |             |      |           |              |
+
+- better choose them on the GUI...

@@ -8,15 +8,15 @@ End
 
 
 Simulation
-  Coordinate Scaling = Real 0.001
+  Coordinate Scaling = Real 1.0
   Max Output Level = 5
   Coordinate System = Cartesian
   Coordinate Mapping(3) = 1 2 3
   Simulation Type = Transient
   Steady State Max Iterations = 50
   Solver Input File = helm_transient.sif
-  Post File = helm_transient_m_through_x10_scaled.vtu
-  Angular Frequency = Variable Time; Real MATC "10*tx"
+  Post File = helm_transient_m_through_x1_not_scaled_damping_1000.vtu
+  Angular Frequency = Variable Time; Real MATC "100*tx"
 !  Angular Frequency = Real 400
   Output Intervals = 1
   Timestep Sizes = 1
@@ -58,7 +58,7 @@ Solver 1
   Steady State Convergence Tolerance = 1.0e-5
   Nonlinear System Convergence Tolerance = 1.0e-7
   Nonlinear System Max Iterations = 20
-  Nonlinear System Newton After Iterations = 3
+  Nonlinear System Newton After Iterations = 30
   Nonlinear System Newton After Tolerance = 1.0e-3
   Nonlinear System Relaxation Factor = 1
   Linear System Solver = Direct
@@ -91,7 +91,7 @@ End
 
 Material 2
   Name = "damping"
-  Sound damping = 0.1
+  Sound damping = 1000
   Density = 150
   Sound speed = 250
 End
@@ -100,6 +100,7 @@ Boundary Condition 1
   Target Boundaries(1) = 27 
   Name = "BoundaryCondition 1"
   Wave Flux 1 = Real 10
+  Wave Flux 2  = 0
 End
 
 
