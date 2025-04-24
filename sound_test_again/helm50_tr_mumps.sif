@@ -1,8 +1,8 @@
 Header
   CHECK KEYWORDS Warn
-  Mesh DB "." "./sound2/"
+  Mesh DB "." "./sound3/"
   Include Path ""
-  Results Directory "./helm50_t_mumps_0/"
+  Results Directory "./helm50_t000/"
 End
 
 
@@ -14,9 +14,9 @@ Simulation
   Coordinate Mapping(3) = 1 2 3
   Simulation Type = Transient
   Steady State Max Iterations = 50
-  Solver Input File = helm_transient.sif
-  Post File = helm_transient_m_through.vtu
-  Angular Frequency = Variable Time; Real MATC "100+1*tx"
+!  Solver Input File = helm_transient.sif
+  Post File = helm_transient.vtu
+  Frequency = Variable Time; Real MATC "100+1*tx"
 !  Angular Frequency = Real 400
   Output Intervals = 1
   Timestep Sizes = 1
@@ -62,7 +62,7 @@ Solver 1
   Nonlinear System Newton After Tolerance = 1.0e-3
   Nonlinear System Relaxation Factor = 1
   Linear System Solver = Direct
-  Linear System Direct Method = MUMPS
+!  Linear System Direct Method = MUMPS
   Linear System Max Iterations = 500
   Linear System Convergence Tolerance = 1.0e-10
   BiCGstabl polynomial degree = 2
@@ -91,15 +91,15 @@ End
 
 Material 2
   Name = "damping"
-  Sound damping = 1
-  Density = 150
+  Sound damping = 0.9
+  Density = 10
   Sound speed = 343.0
 End
 
 Boundary Condition 1
   Target Boundaries(1) = 24
   Name = "BoundaryCondition 1"
-  Wave Flux 1 = Real 10
+  Wave Flux 1 = Real 100
   Wave Flux 2  = Real 0 
 End
 
@@ -107,15 +107,15 @@ End
 Boundary Condition 2
   Target Boundaries(1) = 25
   Name = "outside-wall"
-  Wave Flux 2 = Real 0
+!  Wave Flux 2 = Real 0
 End
 
 
 Boundary Condition 3
   Target Boundaries(2) = 22 23
   Name = "side-walls"
-  Wave Flux 1 = Real 0
-  Wave Flux 2 = Real 0	
+!  Wave Flux 1 = Real 0
+!  Wave Flux 2 = Real 0	
 End
 
 
