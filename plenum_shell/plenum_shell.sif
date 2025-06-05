@@ -1,0 +1,92 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "./plenum_shell1"
+  Include Path ""
+  Results Directory "./resu"
+End
+
+Simulation
+  Max Output Level = 5
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady state
+  Steady State Max Iterations = 1
+  Output Intervals(1) = 1
+  Solver Input File = case.sif
+  Post File = works.vtu
+End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+    Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body Force 1
+  Name = "PressureLoad"
+  Normal Pressure = -1.0  ! N/m²
+End
+
+
+Body 1
+  Target Bodies(13) = 1 2 3 4 5 6 7 8 9 10 11 13 14
+  Name = "Body 1"
+  Equation = 1
+  Material = 1
+End
+
+Body 2
+  Name = "ShellBody"
+  Target Bodies(1) = 12
+  Equation = 1
+  Material = 1
+  Body Force = 1
+End
+
+
+
+
+Equation 1 :: Active Solvers(1) = 1
+
+Solver 1
+  Equation = "Shell equations"
+  Procedure = "ShellSolver" "ShellSolver"
+  Large Deflection = False
+  Displace Mesh = False
+  Linear System Solver = "Iterative"
+  Linear System Preconditioning = ILU2
+  Linear System Max Iterations = 10000
+  Linear System Convergence Tolerance = 1e-5
+  Linear System Iterative Method = GCR
+  Linear System GCR Restart = 100
+  Linear System Abort Not Converged = False
+  Steady State Convergence Tolerance = 1e-09
+  Nonlinear System Convergence Tolerance = 1e-8
+End
+
+
+Material 1
+  Name = "PP"
+  Heat Conductivity = 0.16
+  Poisson ratio = 0.30
+  Heat expansion Coefficient = 80.0e-6
+  Youngs modulus = 1900.0e6
+  Heat Capacity = 900.0
+  Density = 1000
+  Shell Thickness = Real 36.0
+End
+
+
+Boundary Condition 1
+  Target Boundaries(4) = 25 26 27 28
+  U 1 = Real 0
+  U 2 = Real 0
+  U 3 = Real 0
+  DNU 1 = Real 0
+  DNU 2 = Real 0
+  DNU 3 = Real 0
+End
+
