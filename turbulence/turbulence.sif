@@ -1,0 +1,166 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "./body"
+  Include Path ""
+  Results Directory "."
+End
+
+Simulation
+  Max Output Level = 5
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Steady state
+  Coordinate Scaling = Real 0.001
+  Steady State Max Iterations = 1
+  Output Intervals(1) = 1
+  Solver Input File = guisolver.sif
+  Post File = guisolver_parabolic.vtu
+End
+
+
+Solver 1
+  Equation = Kepsilon
+
+  Procedure = "KESolver" "KESolver"
+ 
+  Stabilization Method = String Bubbles
+  Nonlinear System Max Iterations = 1
+  Nonlinear System Convergence Tolerance = 1.0e-5
+  Nonlinear System Newton After Iterations = 20
+  Nonlinear System Newton After Tolerance = 1.0e-3
+  Nonlinear System Relaxation Factor = 0.75
+
+  Linear System Solver = Iterative
+  Linear System Max Iterations = 1000
+  Linear System Iterative Method = BiCGStab
+  Linear System Preconditioning = ILU3
+  Linear System Convergence Tolerance = 1.0e-7
+
+  Steady State Convergence Tolerance = 1.0e-5
+End
+
+
+
+Solver 2
+  Equation = Navier-Stokes
+
+  Stabilization Method = Bubbles
+  Nonlinear System Max Iterations = 1
+  Nonlinear System Convergence Tolerance = 1.0e-5
+  Nonlinear System Newton After Iterations = 10
+  Nonlinear System Newton After Tolerance  = 1.0e-2
+  Nonlinear System Relaxation Factor = 0.75
+
+  Linear System Solver = Iterative
+  Linear System Preconditioning  = ILU0
+  Linear System Max Iterations   = 500
+  Linear System Convergence Tolerance = 1e-8
+  Linear System Iterative Method = BiCGStabL
+  Steady State Convergence Tolerance = 1.0e-4
+End
+
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "Body 1"
+  Equation = 1
+  Material = 1
+  Initial Condition = 1
+End
+
+Initial Condition 1
+!  Pressure = 1000   ! Initial pressure in Pascals
+  Turbulent Viscosity = Real 0.1
+!    Turbulent Viscosity = Real $25*0.127*100/20000
+  Velocity 1 = 0
+  Velocity 2 = 0
+  Velocity 3 = 0    ! if 3D
+End
+
+
+Initial Condition 1
+  Velocity 1 = 0
+  Velocity 2 = 0
+
+  Kinetic Energy = 0.003
+  Kinetic Dissipation = 0.0001
+End
+
+
+
+Equation 1
+  Name = "Equation 1"
+  Active Solvers(2) = 1 2
+ 
+End
+
+
+Material 1
+  Viscosity = $1/19000.0
+  Density = 1
+  KE SigmaK = 1.00
+  KE SigmaE = 1.30
+  KE C1     = 1.44
+  KE C2     = 1.92
+  KE Cmu    = 0.09
+  KE Clip   = Real 1.0e-6
+  Viscosity Model = ke
+End
+ 
+
+
+Material 2
+  Name = "Air (room temperature)"
+  Viscosity = 1.983e-5
+  Density = 1.205
+  Heat expansion Coefficient = 3.43e-3
+  Relative Permittivity = 1.00059
+  Heat Conductivity = 0.0257
+  Heat Capacity = 1005.0
+  Sound speed = 343.0
+    Viscosity = $25*0.127/20000
+  Viscosity Model = spalart-allmaras
+
+End
+
+Boundary Condition 1
+  Target Boundaries(28) = 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 
+  Name = "BoundaryCondition 1"
+  Noslip wall BC = True
+End
+
+Boundary Condition 2
+  Target Boundaries(1) = 30
+  Name = "BoundaryCondition 2"
+!  Normal-Tangential Velocity = True
+!  Velocity 1 = 0.01
+  Velocity 2 = 0
+  Velocity 3 = 0
+!  pressure = 0
+End
+
+
+Boundary Condition 3
+  Target Boundaries(1) = 1 
+  Name = "BoundaryCondition 2"
+!  Normal-Tangential Velocity = True
+  Velocity 1 = 50.0
+!  Velocity 1 = Variable Coordinate 2;  Real MATC "4.0 * (tx - 0.03) * (0.03 - tx) * tx * (1.0 - tx)"
+!  Velocity 1 = Variable Coordinate 2; Real MATC "0.4 * (tx-0.03) * (0.03-tx)"
+
+  Velocity 2 = 0
+  Velocity 3 = 0
+ !   pressure = 0
+ 
+   Kinetic Energy = Real 0.003
+   Kinetic Dissipation = Real 0.001
+End
