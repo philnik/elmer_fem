@@ -240,13 +240,18 @@ Equation 1 :: Active Solvers(1) = 1
 Solver 1
   Equation = "Shell equations"
   Procedure = "ShellSolver" "ShellSolver"
-  Large Deflection = False
-  Displace Mesh = False
-  Linear System Solver = "Iterative"
+  Large Deflection = True
+  Displace Mesh = True
+  Eigen Analysis = True
+  Eigen System Values = 5       ! Number of modes to compute
+ ! Linear System Solver = "Iterative"
+ !  Linear System Iterative Method = GCR
+  Linear System Solver = Direct
+  Linear System Direct Method = UMFPACK
   Linear System Preconditioning = ILU2
   Linear System Max Iterations = 10000
   Linear System Convergence Tolerance = 1e-5
-  Linear System Iterative Method = GCR
+
   Linear System GCR Restart = 1000
   Linear System Abort Not Converged = False
   Steady State Convergence Tolerance = 1e-09

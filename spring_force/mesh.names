@@ -1,0 +1,13 @@
+! ----- names for bodies -----
+$ Solid1 = 10
+! ----- names for boundaries -----
+$ Face2 = 2
+$ Face44 = 3
+$ Face46 = 4
+$ Face47 = 5
+$ Face49 = 6
+$ Face48 = 7
+$ Face17 = 8
+$ Face20 = 9
+$ Face7 = 11
+$ bnry12 = 12
