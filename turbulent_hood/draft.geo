@@ -73,89 +73,9 @@ Line (34) = {34, 32};
 Line (35) = {35, 36};
 Line (36) = {36, 37};
 Line (37) = {37, 35};
-//+
-SetFactory("OpenCASCADE");
-//+
-Curve Loop(1) = {30, 31, 29};
-//+
-Surface(1) = {1};
-//+
-Curve Loop(1) = {33, 34, 32};
-//+
-Surface(1) = {1};
-//+
-Curve Loop(1) = {36, 37, 35};
-//+
-Surface(1) = {1};
-//+
-Curve Loop(1) = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-//+
-Surface(1) = {1};
-//+
-Curve Loop(1) = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-//+
-Plane Surface(1) = {1};
-//+
-Curve Loop(1) = {16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-//+
-Curve Loop(1) = {30, 31, 29};
-//+
-Curve Loop(1) = {33, 34, 32};
-//+
-Curve Loop(1) = {36, 37, 35};
-//+
-Plane Surface(1) = {1};
-//+
-Curve Loop(1) = {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-//+
-Curve Loop(1) = {30, 31, 29};
-//+
-Curve Loop(1) = {33, 34, 32};
-//+
-Curve Loop(1) = {36, 37, 35};
-//+
-Surface(1) = {1};
-//+
-Curve Loop(1) = {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-//+
-Curve Loop(1) = {30, 31, 29};
-//+
-Curve Loop(1) = {33, 34, 32};
-//+
-Curve Loop(1) = {36, 37, 35};
-//+
-Plane Surface(1) = {1};
-//+
-Curve Loop(1) = {14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-//+
-Plane Surface(1) = {1};
-//+
+
 Curve Loop(1) = {21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 //+
-SetFactory("Built-in");
-//+
-SetFactory("Built-in");
-//+
-SetFactory("Built-in");
-//+
-SetFactory("Built-in");
-//+
-SetFactory("Built-in");
-//+
-SetFactory("Built-in");
-//+
-SetFactory("Built-in");
-//+
-Curve Loop(1) = {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-//+
-Plane Surface(1) = {1};
-//+
-SetFactory("Built-in");
-//+
-SetFactory("Built-in");
-//+
-Curve Loop(1) = {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-//+
 Curve Loop(2) = {30, 31, 29};
 //+
 Curve Loop(3) = {33, 34, 32};
@@ -163,29 +83,15 @@ Curve Loop(3) = {33, 34, 32};
 Curve Loop(4) = {36, 37, 35};
 //+
 Plane Surface(1) = {1, 2, 3, 4};
-//+
-SetFactory("Built-in");
-//+
-Curve Loop(1) = {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-//+
-Curve Loop(2) = {30, 31, 29};
-//+
-Curve Loop(3) = {33, 34, 32};
-//+
-Curve Loop(4) = {36, 37, 35};
-//+
-Plane Surface(1) = {1, 2, 3, 4};
-//+
-SetFactory("Built-in");
-//+
-SetFactory("Built-in");
-//+
-Curve Loop(1) = {15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-//+
-Curve Loop(2) = {30, 31, 29};
-//+
-Curve Loop(3) = {33, 34, 32};
-//+
-Curve Loop(4) = {36, 37, 35};
-//+
-Plane Surface(1) = {1, 2, 3, 4};
+
+Field[1] = Distance;
+Field[1].EdgesList = {1};  // Refine around Line 1
+
+Field[2] = Threshold;
+Field[2].IField = 1;
+Field[2].LcMin = 0.05;    // finer mesh size
+Field[2].LcMax = 1.0;     // coarser elsewhere
+Field[2].DistMin = 0.05;
+Field[2].DistMax = 0.2;
+
+Background Field = 2;
