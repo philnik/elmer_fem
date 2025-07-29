@@ -53,8 +53,10 @@ Equation 1 :: Active Solvers(3) = 1 2 3
 Solver 1
   Equation = "Shell equations"
   Procedure = "ShellSolver" "ShellSolver"
-  Large Deflection = True
-  Displace Mesh = True
+!  Variable = "Displacement"
+  Variable DOFs = 5   ! u, v, w, theta_x, theta_y
+  Large Deflection = False
+  Displace Mesh = False
   Linear System Solver = "Iterative"
   Linear System Preconditioning = ILU2
   Linear System Max Iterations = 10000

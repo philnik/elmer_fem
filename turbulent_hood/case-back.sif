@@ -5,32 +5,16 @@ Header
   Results Directory ""
 End
 
-
-
 Simulation
   Max Output Level = 5
-  Coordinate System = Cartesian 2D
+  Coordinate System = Cartesian
   Coordinate Mapping(3) = 1 2 3
-  Simulation Type = Transient
-  Steady State Max Iterations = 5
-  Timestepping Method = BDF
-  BDF Order = 2
-  Timestep Sizes = 0.01
-  Timestep Intervals = 4000
-  Output Intervals = 1
-  Post File = nav_hood_transient.vtu
+  Simulation Type = Steady state
+  Steady State Max Iterations = 1
+  Output Intervals(1) = 1
+  Solver Input File = case.sif
+  Post File = case.vtu
 End
-
-! Simulation
-!   Max Output Level = 5
-!   Coordinate System = Cartesian
-!   Coordinate Mapping(3) = 1 2 3
-!   Simulation Type = Steady state
-!   Steady State Max Iterations = 5
-!   Output Intervals(1) = 1
-!   Solver Input File = case.sif
-!   Post File = case.vtu
-! End
 
 Constants
   Gravity(4) = 0 -1 0 9.82
@@ -50,24 +34,24 @@ End
 
 Solver 1
   Equation = Navier-Stokes
-  Variable = Flow Solution[Velocity:2 Pressure:1]
   Procedure = "FlowSolve" "FlowSolver"
+  Variable = Flow Solution[Velocity:2 Pressure:1]
   Exec Solver = Always
   Stabilize = True
   Optimize Bandwidth = True
-  Steady State Convergence Tolerance = 1.0e-7
-  Nonlinear System Convergence Tolerance = 1.0e-9
-  Nonlinear System Max Iterations = 200
+  Steady State Convergence Tolerance = 1.0e-5
+  Nonlinear System Convergence Tolerance = 1.0e-7
+  Nonlinear System Max Iterations = 20
   Nonlinear System Newton After Iterations = 3
   Nonlinear System Newton After Tolerance = 1.0e-3
   Nonlinear System Relaxation Factor = 1
   Linear System Solver = Iterative
   Linear System Iterative Method = BiCGStab
-  Linear System Max Iterations = 500000
+  Linear System Max Iterations = 500
   Linear System Convergence Tolerance = 1.0e-10
   BiCGstabl polynomial degree = 2
   Linear System Preconditioning = ILU0
-  Linear System ILUT Tolerance = 1.0e-4
+  Linear System ILUT Tolerance = 1.0e-3
   Linear System Abort Not Converged = False
   Linear System Residual Output = 10
   Linear System Precondition Recompute = 1
@@ -80,31 +64,33 @@ End
 
 Material 1
   Name = "Air (room temperature)"
-  Relative Permittivity = 1.00059
   Viscosity = 1.983e-5
-  Density = 1.205
-  Sound speed = 343.0
   Heat expansion Coefficient = 3.43e-3
-  Heat Conductivity = 0.0257
+  Sound speed = 343.0
   Heat Capacity = 1005.0
+  Heat Conductivity = 0.0257
+  Density = 1.205
+  Relative Permittivity = 1.00059
+End
+
+Material 2
+  Name = "Material 2"
 End
 
 Boundary Condition 1
-  Target Boundaries(1) = 20 
-  Name = "outlet"
-  Velocity 1 = 0.01
-  Velocity 2 = 0
+  Target Boundaries(35) = 2 3 4 5 6 7 8 9 10 11 12 13 14 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 
+  Name = "BoundaryCondition 1"
+  Noslip wall BC = True
 End
 
 Boundary Condition 2
-  Target Boundaries(1) = 54 
-  Name = "inlet"
-  Velocity 1 = 0
+  Target Boundaries(1) = 15 
+  Name = "outlet"
 End
 
 Boundary Condition 3
-  Target Boundaries(52) = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 
-  Name = "walls"
-  Velocity 1 = 0
-  Velocity 2 = 0
+  Target Boundaries(1) = 1 
+  Name = "inlet"
+  Normal-Tangential Velocity = True
+  Velocity 1 = 1
 End

@@ -1,0 +1,39 @@
+$HEADER
+
+$SIMULATION
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "fan_body"
+  Equation = 1
+  Material = 1
+End
+
+$SOLVER1
+
+Equation 1
+  Name = "linear_elasticity"
+  Active Solvers(1) = 1
+End
+
+Material 1
+  Name = "Copper (generic)"
+  Heat Capacity = 385.0
+  Poisson ratio = 0.34
+  Heat expansion Coefficient = 16.5e-6
+  Youngs modulus = 115.0e9
+  Density = 8960.0
+  Sound speed = 3810.0
+  Heat Conductivity = 401.0
+End
+
+$BOUNDARY_CONDITIONS

@@ -1,0 +1,102 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "double-outlet"
+  Include Path ""
+  Results Directory "resu"
+End
+
+Simulation
+  Max Output Level = 5
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Simulation Type = Transient
+  Steady State Max Iterations = 10
+  Solver Input File = double-outlet.sif
+  Post File = double_trans.vtu
+  Output Intervals = 1
+  Timestep Sizes = 1
+  Timestep Intervals = 2000
+  Timestepping Method = BDF
+  BDF Order = 1
+End
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "Body 1"
+  Equation = 1
+  Material = 1
+End
+
+Equation 1
+  Name = "Equation 1"
+End
+
+Material 1
+  Name = "Air (room temperature)"
+  Heat expansion Coefficient = 3.43e-3
+  Density = 1.205
+  Heat Conductivity = 0.0257
+  Heat Capacity = 1005.0
+  Viscosity = 1.983e-5
+  Relative Permittivity = 1.00059
+  Sound speed = 343.0
+End
+
+Boundary Condition 1
+  Target Boundaries(1) = 7
+  Name = "inlet"
+  !Velocity 1 = 0
+  !Velocity 2 = 10
+End
+
+Boundary Condition 2
+  Target Boundaries(1) = 8
+  Name = "outlet"
+  Velocity 2 = Variable Time; Real MATC "0.1*tx"
+  Velocity 1 = 0
+End
+
+Boundary Condition 3
+  Target Boundaries(26) = 1 2 3 4 5 6 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28
+  Name = "walls"
+ ! Velocity 3 = 0
+ ! Velocity 2 = 0
+!  Velocity 1 = 0
+  Noslip wall BCs = Logical False
+  Normal-Tangential Velocity = True
+  Slip Coefficient = Real 1000  ! Adjust this value
+End
+
+
+
+Solver 1
+  Equation = Navier-Stokes
+  Procedure = "FlowSolve" "FlowSolver"
+  Variable = Flow Solution[Velocity:2 Pressure:1]
+  Exec Solver = Always
+  Stabilize = True
+  Optimize Bandwidth = True
+  Steady State Convergence Tolerance = 1.0e-5
+  Nonlinear System Convergence Tolerance = 1.0e-7
+  Nonlinear System Max Iterations = 20
+  Nonlinear System Newton After Iterations = 3
+  Nonlinear System Newton After Tolerance = 1.0e-3
+  Nonlinear System Relaxation Factor = 1
+  Linear System Solver = Direct
+  Linear System Direct Method = Umfpack
+End
+
+Equation 1
+  Name = "navier_hood"
+  NS Convect = False
+  Active Solvers(1) = 1
+End
