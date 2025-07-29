@@ -25,10 +25,10 @@ Simulation
   Timestepping Method = BDF
   BDF Order = 1               ! Or 2 for more accuracy
   Timestep Intervals = 1000     ! Number of time steps
-  Timestep Size = 1.0        ! Time step in seconds
+  Timestep Size = 0.01        ! Time step in seconds
   Output Intervals = 1       ! Write results every 10 steps
   Solver Input File = chimney5.sif
-  Post File = v22_new.vtu
+  Post File = v23_new.vtu
 End
 
 

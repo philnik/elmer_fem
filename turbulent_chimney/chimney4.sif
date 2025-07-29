@@ -10,9 +10,9 @@ End
 !$k = (3/2) · ($U · $I)^2                                 # Turbulence kinetic energy
 !$e = 0.09 · $k^(3/2) / $LS                               # Dissipation rate
 
-$ke = 0.06
-$kd = 0.034
-$v = 3.6
+$ke = 0.02
+$kd = 0.005
+$v = 2.2
 
 
 Simulation
@@ -21,14 +21,14 @@ Simulation
   Coordinate Scaling = Real 0.001
   Coordinate System = Cartesian
   Coordinate Mapping(3) = 1 2 3
-  Steady State Max Iterations = 10
+!  Steady State Max Iterations = 10
   Timestepping Method = BDF
   BDF Order = 2               ! Or 2 for more accuracy
   Timestep Intervals = 1000     ! Number of time steps
-  Timestep Size = 1.0         ! Time step in seconds
+  Timestep Size = 0.01        ! Time step in seconds
   Output Intervals = 1       ! Write results every 10 steps
   Solver Input File = chimney.sif
-  Post File = v5_new.vtu
+  Post File = v6_new_particle.vtu
 End
 
 
@@ -102,9 +102,29 @@ Solver 2
   Steady State Convergence Tolerance = 1.0e-5
 End
 
+Solver 2
+  Exec Solver = Always                     ! So it runs at every timestep
+  Equation = "ParticleDynamics"
+  Procedure = "ParticleDynamics"
+  Variable = String "Particle Positions"
+  Variable DOFs = 3
+
+  Number of Particles = Integer 100
+  Time Step Size = Real 0.01              ! Same as global timestep
+  Velocity Field = String "Velocity"      ! From Navier-Stokes
+  Particle Output File = String "particles"
+
+  Stokes Drag = Logical True              ! Optional
+  Gravity(3) = Real 0 -9.81 0                ! Optional, 3rd component = vertical
+  Particle Radius = Real 0.001            ! Optional
+  Particle Density = Real 1000.0          ! Optional
+End
+
+
+
 Equation 1
   Name = "navier"
-  Active Solvers(2) = 1 2
+  Active Solvers(3) = 1 2 3
 End
 
 Material 1
