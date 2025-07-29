@@ -1,0 +1,155 @@
+Header
+  CHECK KEYWORDS Warn
+  Mesh DB "." "."
+  Include Path ""
+  Results Directory ""
+End
+
+
+Simulation
+  Simulation Type = Transient
+  Max Output Level = 5
+  Coordinate Scaling = Real 0.001
+  Coordinate System = Cartesian
+  Coordinate Mapping(3) = 1 2 3
+  Steady State Max Iterations = 10
+  Timestepping Method = BDF
+  BDF Order = 1                ! Or 2 for more accuracy
+  Timestep Intervals = 100     ! Number of time steps
+  Timestep Size = 0.2         ! Time step in seconds
+  Output Intervals = 1       ! Write results every 10 steps
+  Solver Input File = chimney.sif
+  Post File = FFF.vtu
+End
+
+
+
+Constants
+  Gravity(4) = 0 -1 0 9.82
+  Stefan Boltzmann = 5.670374419e-08
+  Permittivity of Vacuum = 8.85418781e-12
+  Permeability of Vacuum = 1.25663706e-6
+  Boltzmann Constant = 1.380649e-23
+  Unit Charge = 1.6021766e-19
+End
+
+Body 1
+  Target Bodies(1) = 1
+  Name = "Body 1"
+  Equation = 1
+  Material = 1
+  Initial condition = 1
+End
+
+
+
+Solver 1
+  Equation = Kepsilon
+  Procedure = "KESolver" "KESolver"
+  Stabilization Method = String Bubbles
+  Nonlinear System Max Iterations = 1
+  Nonlinear System Convergence Tolerance = 1.0e-5
+  Nonlinear System Newton After Iterations = 20
+  Nonlinear System Newton After Tolerance = 1.0e-3
+  Nonlinear System Relaxation Factor = 0.75
+  Linear System Solver = Iterative
+  Linear System Max Iterations = 1000
+  Linear System Iterative Method = BiCGStab
+  Linear System Preconditioning = ILU3
+  Linear System Convergence Tolerance = 1.0e-7
+  Steady State Convergence Tolerance = 1.0e-5
+End
+
+
+
+Solver 2
+  Equation = Navier-Stokes
+  Variable = Flow Solution[Velocity:2 Pressure:1]
+  Procedure = "FlowSolve" "FlowSolver"
+  Exec Solver = Always
+  Stabilize = True
+  Optimize Bandwidth = True
+  Steady State Convergence Tolerance = 1.0e-5
+  Nonlinear System Convergence Tolerance = 1.0e-7
+  Nonlinear System Max Iterations = 20
+  Nonlinear System Newton After Iterations = 3
+  Nonlinear System Newton After Tolerance = 1.0e-3
+  Nonlinear System Relaxation Factor = 1
+  Linear System Solver = Iterative
+  Linear System Iterative Method = BiCGStab
+  Linear System Max Iterations = 50000
+  Linear System Convergence Tolerance = 1.0e-10
+  BiCGstabl polynomial degree = 2
+  Linear System Preconditioning = ILU0
+  Linear System ILUT Tolerance = 1.0e-3
+  Linear System Abort Not Converged = False
+  Linear System Residual Output = 10
+  Linear System Precondition Recompute = 1
+End
+
+
+
+
+
+Equation 1
+  Name = "navier"
+  NS Convect = False
+  Active Solvers(2) = 1 2
+End
+
+Material 1
+  Name = "Air (room temperature)"
+  Heat Conductivity = 0.0257
+  Density = 1.205
+  Heat expansion Coefficient = 3.43e-3
+  Relative Permittivity = 1.00059
+  Viscosity = 1.983e-5
+  Sound speed = 343.0
+  Heat Capacity = 1005.0
+    Density = 1
+  KE SigmaK = 1.00
+  KE SigmaE = 1.30
+  KE C1     = 1.44
+  KE C2     = 1.92
+  KE Cmu    = 0.09
+  KE Clip   = Real 1.0e-6
+  Viscosity Model = ke
+End
+
+Initial Condition 1
+  Name = "InitialCondition 1"
+  Velocity 1 = 0
+  Pressure = 0
+  Velocity 3 = 0
+  Velocity 2 = 0.0
+  
+  Kinetic Energy = 0.003
+  Kinetic Dissipation = 0.0001
+End
+
+
+Boundary Condition 1
+  Name = "Inlet"
+    Target Boundaries(1) = 12 
+  Velocity 1 = Variable time
+    Real MATC tx*0.5"
+    Normal-Tangential Velocity = True
+
+
+
+  Kinetic Energy = 0.003
+  Kinetic Dissipation = 0.0001
+End
+
+Boundary Condition 2
+  Target Boundaries(1) = 14 
+  Name = "outlet"
+  pressure = 0
+End
+
+Boundary Condition 3
+  Target Boundaries(18) = 1 2 3 4 5 6 7 8 9 10 11 13 15 16 17 18 19 20 
+  Name = "walls"
+  Noslip wall BC = True
+  Normal-Tangential Velocity = True
+End
