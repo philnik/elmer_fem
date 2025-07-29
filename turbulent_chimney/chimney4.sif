@@ -146,13 +146,13 @@ Boundary Condition 1
 End
 
 Boundary Condition 2
-  Target Boundaries(1) = 14 
+  Target Boundaries(3) = 13 14 15
   Name = "outlet"
   pressure = 0.0
 End
 
 Boundary Condition 3
-  Target Boundaries(18) = 1 2 3 4 5 7 8 9 10 11 12 13 15 16 17 18 19 20 
+  Target Boundaries(16) = 1 2 3 4 5 7 8 9 10 11 12  16 17 18 19 20 
   Name = "walls"
 velocity 1 = 0.0
 velocity 2 = 0.0
