@@ -1,4 +1,5 @@
-d1 = 100;
+SetFactory("Built-in");
+d1 = 50000.0;
 Point(1) = { -1.75000000000000E+02,  +3.44999766749566E+03, 0., d1};
 Point(2) = { -4.50000000000000E+02,  +3.15499710471709E+03, 0., d1};
 Point(3) = { -4.50000000000000E+02,  +2.47838441686269E+03, 0., d1};
@@ -45,3 +46,30 @@ Curve Loop(1) = {13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 Curve Loop(2) = {18, 19, 20, 17};
 //+
 Plane Surface(1) = {1, 2};
+
+
+Field[1] = Distance;
+Field[1].EdgesList = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};  // Refine around Line 1
+Field[1].NumPointsPerCurve = 100;
+
+Field[2] = Threshold;
+Field[2].IField = 1;
+Field[2].LcMin = 10;    // finer mesh size
+Field[2].LcMax = 100;     // coarser elsewhere
+Field[2].DistMin = 0.00;
+Field[2].DistMax = 50.0;
+
+
+// --- Field 3: Constant everywhere else ---
+Field[3] = Constant;
+Field[3].Lc = 5000.0;  // coarse size
+
+// --- Combine using Min (i.e. refine where needed) ---
+Field[4] = Min;
+Field[4].FieldsList = {2, 3};
+
+Background Field = 4;
+
+Mesh.MeshSizeExtendFromBoundary = 0;
+Mesh.MeshSizeFromPoints = 0;
+Mesh.MeshSizeFromCurvature = 0;
