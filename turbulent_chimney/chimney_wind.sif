@@ -28,7 +28,7 @@ Simulation
   Timestep Size = 0.01        ! Time step in seconds
   Output Intervals = 1       ! Write results every 10 steps
   Solver Input File = chimney5.sif
-  Post File = v22_wind.vtu
+  Post File = v22_wind_mumps.vtu
 End
 
 
@@ -67,7 +67,7 @@ Solver 1
   Nonlinear System Relaxation Factor = 1
 !  Linear System Solver = Direct
   Linear System Solver = Direct  ! <-- This selects a direct solver
-  Linear System Direct Method = umfpack  ! Or mumps, pastix, umfpack, etc.
+  Linear System Direct Method = mumps  ! Or mumps, pastix, umfpack, etc.
 !  Linear System Iterative Method = BiCGStab
   Linear System Max Iterations = 50000
   Linear System Convergence Tolerance = 1.0e-10
@@ -94,7 +94,7 @@ Solver 2
   Nonlinear System Relaxation Factor = 0.75
   Linear System Solver = Direct
   Linear System Solver = Direct  ! <-- This selects a direct solver
-  Linear System Direct Method = umfpack  ! Or mumps, pastix, umfpack, etc.
+  Linear System Direct Method = mumps  ! Or mumps, pastix, umfpack, etc.
   Linear System Max Iterations = 1000
 !  Linear System Iterative Method = BiCGStab
   Linear System Preconditioning = ILU3
@@ -148,24 +148,24 @@ End
 
 
 
-Boundary Condition 1
-  Name = "Inlet"
+Boundary Condition 2
+  Name = "wind"
     Target Boundaries(1) = 13
   Velocity 2 = 0
-  Velocity 1 = $v
+  Velocity 1 = -15.0
   Kinetic Energy = $ke
   Kinetic Dissipation = $kd
 
 End
 
 
-Boundary Condition 2
+Boundary Condition 3
   Target Boundaries(4) = 14 15 16 12
   Name = "outlet"
   pressure = 0.0
 End
 
-Boundary Condition 3
+Boundary Condition 4
   Target Boundaries(14) = 1 2 3 4 5 7 8 9 10 11 17 18 19 20 
   Name = "walls"
 !velocity 1 = 0.0
