@@ -1,0 +1,224 @@
+Check Keywords "Warn"
+
+Header
+  Mesh DB "."
+End
+
+Solver 1
+  Calculate Principal = Logical True
+  Displace mesh = Logical True
+  Eigen Analysis = Logical False
+  Equation = String "Stress Solver"
+  Geometric Stiffness = Logical False
+  Linear System Abort Not Converged = Logical False
+  Linear System Direct Method = String "Umfpack"
+  Linear System Precondition Recompute = Integer 1
+  Linear System Residual Output = Integer 1
+  Linear System Solver = String "Direct"
+  Optimize Bandwidth = Logical True
+  Procedure = File "StressSolve" "StressSolver"
+  Stabilize = Logical True
+  Steady State Convergence Tolerance = Real 1e-05
+  Variable = String "Displacement"
+  Variable DOFs = Integer 3
+End
+
+Simulation
+  Coordinate Mapping(3) = Integer 1 2 3
+  Coordinate Scaling = Real 0.001
+  Coordinate System = String "Cartesian"
+  Simulation Type = String "Steady State"
+  Steady State Max Iterations = Integer 1
+  Steady State Min Iterations = Integer 0
+  Use Mesh Names = Logical True
+End
+
+Constants
+End
+
+Body 1
+  Equation = Integer 1
+  Material = Integer 1
+  Name = String "Solid1"
+End
+
+Material 1
+  Name = String "Custom"
+  Poisson ratio = Real 0.37
+  Youngs Modulus = Real 1000000000.0
+End
+
+Equation 1
+  Active Solvers(2) = Integer 1 2
+End
+
+Solver 2
+  Ascii Output = Logical True
+  Coordinate Scaling Revert = Logical True
+  Equation = String "ResultOutput"
+  Exec Solver = String "After simulation"
+  Output File Name = File "FreeCAD"
+  Procedure = File "ResultOutputSolve" "ResultOutputSolver"
+  Vtu Format = Logical True
+  Vtu Time Collection = Logical True
+End
+
+Boundary Condition 1
+  Name = String "Face22"
+  Normal Force = Real -10000.0
+End
+
+Boundary Condition 2
+  Name = String "Face19"
+  Normal Force = Real -10000.0
+End
+
+Boundary Condition 3
+  Name = String "Face24"
+  Normal Force = Real -10000.0
+End
+
+Boundary Condition 4
+  Name = String "Face32"
+  Normal Force = Real -10000.0
+End
+
+Boundary Condition 5
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge34"
+End
+
+Boundary Condition 6
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge38"
+End
+
+Boundary Condition 7
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge1"
+End
+
+Boundary Condition 8
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge7"
+End
+
+Boundary Condition 9
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge35"
+End
+
+Boundary Condition 10
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge10"
+End
+
+Boundary Condition 11
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge13"
+End
+
+Boundary Condition 12
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge43"
+End
+
+Boundary Condition 13
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge40"
+End
+
+Boundary Condition 14
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge37"
+End
+
+Boundary Condition 15
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge36"
+End
+
+Boundary Condition 16
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge32"
+End
+
+Boundary Condition 17
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge30"
+End
+
+Boundary Condition 18
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge26"
+End
+
+Boundary Condition 19
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge28"
+End
+
+Boundary Condition 20
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge25"
+End
+
+Boundary Condition 21
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge23"
+End
+
+Boundary Condition 22
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge21"
+End
+
+Boundary Condition 23
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge16"
+End
+
+Boundary Condition 24
+  Displacement 1 = Real 0.0
+  Displacement 2 = Real 0.0
+  Displacement 3 = Real 0.0
+  Name = String "Edge18"
+End
