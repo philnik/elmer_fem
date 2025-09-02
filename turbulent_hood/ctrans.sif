@@ -87,21 +87,11 @@ Solver 2
 End
 
 
-Solver 3
-  exec solver = After timestep
-  Equation = "result output"
-  Procedure = "ResultOutputSolve" "ResultOutputSolver"
-  Save Geometry IDs = Logical True
-  Output File Name = $vtu_fname
-  Vtu Format = Logical True
-  Discontinuous Bodies = true
-End
-
 
 
 Equation 1
   Name = "Equation 1"
-  Active Solvers(3) = 1 2 3
+  Active Solvers(2) = 1 2
 End
 
 
