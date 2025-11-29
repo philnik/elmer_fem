@@ -8,12 +8,12 @@ End
 Simulation
   Max Output Level = 5
   Coordinate System = Cartesian
-  Coordinate Mapping(3) = 1 2 3
+!  Coordinate Mapping(3) = 1 2 3
   Simulation Type = Steady state
   Steady State Max Iterations = 1
   Output Intervals(1) = 1
   Solver Input File = case.sif
-  Post File = case.vtu
+  Post File = testme.vtu
 End
 
 Constants
@@ -45,8 +45,8 @@ Solver 1
   Nonlinear System Newton After Iterations = 3
   Nonlinear System Newton After Tolerance = 1.0e-3
   Nonlinear System Relaxation Factor = 1
-  Linear System Solver = Iterative
-  Linear System Iterative Method = BiCGStab
+  Linear System Solver = Direct
+  Linear System Iterative Method = mumps
   Linear System Max Iterations = 50000
   Linear System Convergence Tolerance = 1.0e-10
   BiCGstabl polynomial degree = 2
@@ -55,6 +55,9 @@ Solver 1
   Linear System Abort Not Converged = False
   Linear System Residual Output = 10
   Linear System Precondition Recompute = 1
+  Reaction Force = Logical True
+  Variable(1) = String "Reaction Force"
+  Variable Dofs = 2
 End
 
 
@@ -87,7 +90,7 @@ Boundary Condition 2
   Name = "force_fan"
   Target Coordinates(1,2) = 200.0 300.0
   Force 2 = -70
-  Force 1 = 50
+  Force 1 = -500
 End
 
 
@@ -96,7 +99,7 @@ Boundary Condition 3
   Name = "force_motor"
   Target Coordinates(1,2) = 470.0 60.0
   Force 2 = 30
-  Force 1 = -50
+  Force 1 = -0
 End
 
 

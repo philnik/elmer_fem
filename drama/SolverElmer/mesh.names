@@ -1,9 +1,0 @@
-! ----- names for bodies -----
-$ Solid1 = 5
-! ----- names for boundaries -----
-$ Face6 = 2
-$ Face63 = 3
-$ Face7 = 4
-$ Face58 = 6
-$ Face176 = 7
-$ bnry8 = 8

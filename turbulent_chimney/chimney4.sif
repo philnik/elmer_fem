@@ -67,7 +67,7 @@ Solver 1
   Nonlinear System Relaxation Factor = 1
 !  Linear System Solver = Direct
   Linear System Solver = Direct  ! <-- This selects a direct solver
-  Linear System Direct Method = umfpack  ! Or mumps, pastix, umfpack, etc.
+  Linear System Direct Method = mumps  ! Or mumps, pastix, umfpack, etc.
 !  Linear System Iterative Method = BiCGStab
   Linear System Max Iterations = 50000
   Linear System Convergence Tolerance = 1.0e-10
@@ -94,7 +94,7 @@ Solver 2
   Nonlinear System Relaxation Factor = 0.75
   Linear System Solver = Direct
   Linear System Solver = Direct  ! <-- This selects a direct solver
-  Linear System Direct Method = umfpack  ! Or mumps, pastix, umfpack, etc.
+  Linear System Direct Method = mumps  ! Or mumps, pastix, umfpack, etc.
   Linear System Max Iterations = 1000
 !  Linear System Iterative Method = BiCGStab
   Linear System Preconditioning = ILU3
@@ -102,29 +102,29 @@ Solver 2
   Steady State Convergence Tolerance = 1.0e-5
 End
 
-Solver 2
-  Exec Solver = Always                     ! So it runs at every timestep
-  Equation = "ParticleDynamics"
-  Procedure = "ParticleDynamics"
-  Variable = String "Particle Positions"
-  Variable DOFs = 3
+! Solver 3
+!   Exec Solver = Always                     ! So it runs at every timestep
+!   Equation = "ParticleDynamics"
+!   Procedure = "ParticleDynamics"
+!   Variable = String "Particle Positions"
+!   Variable DOFs = 3
 
-  Number of Particles = Integer 100
-  Time Step Size = Real 0.01              ! Same as global timestep
-  Velocity Field = String "Velocity"      ! From Navier-Stokes
-  Particle Output File = String "particles"
+!   Number of Particles = Integer 100
+!   Time Step Size = Real 0.01              ! Same as global timestep
+!   Velocity Field = String "Velocity"      ! From Navier-Stokes
+!   Particle Output File = String "particles"
 
-  Stokes Drag = Logical True              ! Optional
-  Gravity(3) = Real 0 -9.81 0                ! Optional, 3rd component = vertical
-  Particle Radius = Real 0.001            ! Optional
-  Particle Density = Real 1000.0          ! Optional
-End
+!   Stokes Drag = Logical True              ! Optional
+!   Gravity(3) = Real 0 -9.81 0                ! Optional, 3rd component = vertical
+!   Particle Radius = Real 0.001            ! Optional
+!   Particle Density = Real 1000.0          ! Optional
+! End
 
 
 
 Equation 1
   Name = "navier"
-  Active Solvers(3) = 1 2 3
+  Active Solvers(2) = 1 2
 End
 
 Material 1

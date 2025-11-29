@@ -1,7 +1,7 @@
 Check Keywords "Warn"
 
 Header
-  Mesh DB "."
+  Mesh DB "part"
 End
 
 Solver 1
@@ -56,8 +56,8 @@ Solver 2
   Ascii Output = Logical True
   Coordinate Scaling Revert = Logical True
   Equation = String "ResultOutput"
-  Exec Solver = String "After simulation"
-  Output File Name = File "FreeCAD"
+  Exec Solver = String "After timestep"
+  Output File Name = File "parallel"
   Procedure = File "ResultOutputSolve" "ResultOutputSolver"
   Vtu Format = Logical True
   Vtu Time Collection = Logical True
