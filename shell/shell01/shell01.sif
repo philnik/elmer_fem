@@ -27,9 +27,18 @@ End
 
 Material 1
   Density = 1000.0
-  Youngs Modulus = 70e6
+  Elastic Matrix(6,6) = Real 1.0e10 0 0 0 0 0
+                        0 2.0e10 0 0 0 0
+                        0 0 0.5e10 0 0 0
+                        0 0 0 0.8e10 0 0
+                        0 0 0 0 0.6e10 0
+                        0 0 0 0 0 0.7e10
+  Youngs Modulus = Real 70e6
+  !Youngs Modulus 2 = Real 70e9
+  !Youngs Modulus 3 = Real 70e6
   Poisson Ratio = 0.3
-  Shell Thickness = 0.005
+  Shell Thickness = 0.050
+  Thickness = 0.050
 End
 
 Body Force 1
@@ -40,7 +49,9 @@ End
 
 
 Solver 1
-  Equation = "Shell equations"
+  !Equation = "Shell equations"
+  Equation = "Mindlin Plate"
+  Stress = Logical True
   Procedure = "ShellSolver" "ShellSolver"
   Large Deflection = True
   Displace Mesh = True

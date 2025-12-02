@@ -77,13 +77,22 @@ End
 Boundary Condition 1
   Target Boundaries(1) = 6 
   Name = "pressure"
-  Normal Force = -9000
+  Normal Force = $ -0.25*1000*1*20*1.5
 End
 
 Boundary Condition 2
-  Target Boundaries(4) = 4 7 11 15 
+  Target Boundaries(2) = 4 11
   Name = "reaction"
   Displacement 1 = 0
   Displacement 3 = 0
   Displacement 2 = 0
 End
+
+
+! Boundary Condition 2
+!   Target Boundaries(2) = 15 7 
+!   Name = "reaction"
+!   Displacement 1 = 0
+!   Displacement 3 = 0
+!   Displacement 2 = 0
+! End
