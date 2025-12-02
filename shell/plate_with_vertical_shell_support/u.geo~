@@ -1,0 +1,26 @@
+//-----------------------------------------------------
+// Three lines forming an open U
+//-----------------------------------------------------
+
+h = 1.0;    // height of legs
+w = 0.8;    // width
+dz = 3.0;   // extrusion distance
+
+// Points
+Point(1) = {0, 0, 0};    // left bottom
+Point(2) = {0, h, 0};    // left top
+Point(3) = {w, h, 0};    // right top
+Point(4) = {w, 0, 0};    // right bottom
+
+// Lines (open U shape)
+Line(1) = {1,2};   // left vertical
+Line(2) = {2,3};   // top horizontal
+Line(3) = {3,4};   // right vertical
+
+//-----------------------------------------------------
+// Extrude each line → produces exactly 1 surface per line
+//-----------------------------------------------------
+
+Extrude {0,0,dz} { Line{1}; }  // left surface
+Extrude {0,0,dz} { Line{2}; }  // top surface
+Extrude {0,0,dz} { Line{3}; }  // right surface
