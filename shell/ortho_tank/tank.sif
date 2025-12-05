@@ -37,11 +37,19 @@ End
 
 
 Body 2
-  Target Bodies(7) = 1 2 3 4 5 6 7
+  Target Bodies(6) = 2 3 4 5 6 7
   Name = "Body 1"
   Equation = 1
   Material = 1
   Body Force = 2
+End
+
+Body 3
+  Target Bodies(1) = 1
+  Name = "Body 1"
+  Equation = 1
+  Material = 2
+  Body Force = 3
 End
 
 
@@ -55,6 +63,13 @@ Body Force 2
   Name = "BodyForce 2"
   Normal Pressure = 10
 End
+
+
+Body Force 3
+  Name = "BodyForce 3"
+  Normal Pressure = -10
+End
+
 
 
 
@@ -71,10 +86,10 @@ Solver 1
   Nonlinear System Newton After Iterations = 3
   Nonlinear System Newton After Tolerance = 1.0e-3
   Nonlinear System Relaxation Factor = 1
-  Linear System Solver = Iterative
-  Linear System Iterative Method = BiCGStab
-!  Linear System Solver = Direct
-!  Linear System Iterative Method = MUMPS
+!  Linear System Solver = Iterative
+!  Linear System Iterative Method = BiCGStab
+  Linear System Solver = Direct
+  Linear System Iterative Method = MUMPS
   
   Linear System Max Iterations = 5000
   Linear System Convergence Tolerance = 1.0e-10
@@ -104,8 +119,21 @@ Material 1
 End
 
 
+Material 2
+  Name = "pp"
+  Shell Thickness = 0.012
+  Youngs modulus = 2.50e09
+  Poisson ratio = 0.3
+  Heat Capacity = 1265.0
+  Sound speed = 5100.0
+  Heat Conductivity = 44.8
+  Density = 7850.0
+  Heat expansion Coefficient = 13.8e-6
+End
+
+
 Boundary Condition 1
-  Target Boundaries(6) = 15 19 5 20 24 10
+  Target Boundaries(7) = 3 5 10 15 19 20 24
   Name = "BoundaryCondition 1"
   U 1 = 0
   DNU 2 = 0
