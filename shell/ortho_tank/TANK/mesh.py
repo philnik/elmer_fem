@@ -58,13 +58,17 @@ if __name__ == "__main__":
     targets = [(-4500,1119,2000),
               (-4500,-1119,2000),
               (-3000,1119,2000),
-              (-3000,1119,2000),
+              (-3000,-1119,2000),
               (-1500,1119,2000),
-              (-1500,1119,2000),
+              (-1500,-1119,2000),
               (4000,1119,2000),
-              (4000,1119,2000),
+              (4000,-1119,2000),
               ]
-              
+
+    res = []
     for target in targets:
         closest_id, dist = find_closest_node(target, coords, ids)
         print(f"Closest node to {target}: Node {closest_id}, distance = {dist}")
+        res.append(closest_id)
+    lent = len(targets)
+    print(f"Target Nodes({lent}) = {' '.join(str(n) for n in res)}")
